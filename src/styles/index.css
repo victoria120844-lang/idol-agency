@@ -1,0 +1,152 @@
+@import 'tailwindcss';
+@config '../../tailwind.config.ts';
+
+/*
+ * Raw design tokens.
+ *
+ * Tailwind utilities come from tailwind.config.ts; these variables carry the
+ * identical values for contexts Tailwind cannot reach — inline SVG fills,
+ * canvas, and the neon glow shadow. Keep the two files in sync.
+ */
+:root {
+  --ink: #0a0a0b;
+  --ink-soft: #141416;
+  --ink-line: #26262a;
+
+  --paper: #ffffff;
+  --paper-soft: #f4f4f5;
+  --paper-line: #e4e4e7;
+
+  --neon: #ff1f3d;
+  --neon-dim: #c4162e;
+  --neon-glow: rgba(255, 31, 61, 0.35);
+
+  --muted: #8a8a93;
+
+  /* Shell chrome dimensions, shared by AppShell and its spacers. */
+  --rail-w: 64px;
+  --ticker-h: 28px;
+  --topbar-h: 56px;
+  --bottombar-h: 60px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  /* The only gradient in the product: a barely-visible vertical ink wash. */
+  background: linear-gradient(180deg, var(--ink) 0%, #0c0c0e 100%);
+  background-attachment: fixed;
+  color: var(--paper);
+  font-family:
+    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    'Apple SD Gothic Neo', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+/* Korean text must never break mid-word. */
+* {
+  word-break: keep-all;
+}
+
+/* Money, stats and chart figures always align in columns. */
+.tabular,
+input[type='number'] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* Section label: UPPERCASE / 11px / 0.12em / muted. */
+.kicker {
+  font-size: 11px;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--kicker-color, var(--muted));
+  font-weight: 500;
+}
+
+/*
+ * Paper surfaces darken their secondary text. --muted on white is only 3.4:1,
+ * below AA; mixing the ink token down to ~62% lands at 5.7:1 and keeps the
+ * palette to the tokens already defined.
+ */
+.on-paper {
+  --kicker-color: color-mix(in srgb, var(--ink) 62%, #ffffff);
+}
+
+/* The one glow. Active and primary elements only, never large fills. */
+.glow-neon {
+  box-shadow:
+    0 0 0 1px var(--neon),
+    0 0 24px var(--neon-glow);
+}
+
+:focus-visible {
+  outline: 2px solid var(--neon);
+  outline-offset: 2px;
+}
+
+/* Seamless marquee: the track holds the headline list twice, so translating
+   exactly -50% lands on an identical frame. Transform only — stays on the
+   compositor. */
+@keyframes ticker-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.ticker-track {
+  animation: ticker-scroll var(--ticker-dur, 60s) linear infinite;
+  will-change: transform;
+}
+
+/* 응원봉 물결: hundreds of dots breathing out of phase. Opacity only, so the
+   whole field stays on the compositor. Phase comes from inline delays. */
+@keyframes lightstick-twinkle {
+  0%,
+  100% {
+    opacity: var(--dot-opacity, 0.35);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.lightstick-dot {
+  animation-name: lightstick-twinkle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+/* Hairline dashboards scroll a lot; keep the bars unobtrusive. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ink-line);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
