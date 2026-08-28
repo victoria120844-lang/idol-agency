@@ -1,50 +1,2455 @@
 <!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#050508" />
-    <meta name="description" content="소형 기획사를 운영해 아이돌 그룹을 데뷔시키는 브라우저 시뮬레이션 게임. 설치도 로그인도 없이 바로 플레이." />
-    <title>IDOL AGENCY SIMULATOR · 소형 기획사 운영 시뮬레이터</title>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0B">
+<meta name="description" content="소형 기획사를 운영해 아이돌 그룹을 데뷔시키는 브라우저 시뮬레이션 게임. 설치도 로그인도 없이 바로 플레이.">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="IDOL AGENCY SIMULATOR">
+<meta property="og:title" content="IDOL AGENCY SIMULATOR · 소형 기획사 운영 시뮬레이터">
+<meta property="og:description" content="자본금 5,000,000원. 연습생을 뽑고, 데뷔조를 짜고, 7년 전속계약을 버텨내세요.">
+<meta property="og:image" content="./og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="IDOL AGENCY SIMULATOR · 소형 기획사 운영 시뮬레이터">
+<meta name="twitter:description" content="자본금 5,000,000원으로 시작하는 아이돌 기획사 경영 시뮬레이터. 브라우저에서 바로 플레이.">
+<meta name="twitter:image" content="./og.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<title>IDOL AGENCY SIMULATOR</title>
+</head>
+<body>
+<style>
+:root{
+  --ink:#0A0A0B; --ink-soft:#141416; --ink-2:#1B1B1F; --ink-line:#26262A;
+  --paper:#FFFFFF; --paper-soft:#F4F4F5; --paper-line:#E4E4E7;
+  --neon:#FF1F3D; --neon-dim:#C4162E; --neon-glow:rgba(255,31,61,.35);
+  --muted:#8A8A93; --dim:rgba(138,138,147,.62);
+  --fan:#FF1F3D;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--ink); color:var(--paper); font-family:var(--sans);
+  font-size:14px; line-height:1.55; word-break:keep-all;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+.tabular{font-family:var(--mono); font-variant-numeric:tabular-nums}
+.kicker{font-family:var(--mono); font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--dim); margin:0}
+h1,h2,h3,h4{margin:0; letter-spacing:-.02em; font-weight:600}
+button{font-family:inherit; cursor:pointer}
+input,select{font-family:inherit}
+::selection{background:var(--neon); color:#fff}
 
-    <!-- Open Graph / Twitter. Relative image path so it resolves from any
-         subpath the build is hosted under. -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="IDOL AGENCY SIMULATOR" />
-    <meta property="og:title" content="IDOL AGENCY SIMULATOR · 소형 기획사 운영 시뮬레이터" />
-    <meta
-      property="og:description"
-      content="자본금 5,000,000원. 연습생을 뽑고, 데뷔조를 짜고, 4주간의 컴백을 버텨내세요. 설치도 로그인도 없습니다."
-    />
-    <meta property="og:image" content="./og.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:locale" content="ko_KR" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="IDOL AGENCY SIMULATOR · 소형 기획사 운영 시뮬레이터" />
-    <meta
-      name="twitter:description"
-      content="자본금 5,000,000원으로 시작하는 아이돌 기획사 경영 시뮬레이터. 브라우저에서 바로 플레이."
-    />
-    <meta name="twitter:image" content="./og.png" />
+/* ---------- app frame ---------- */
+#app{min-height:100vh; display:flex; flex-direction:column}
 
-    <!-- Korean UI face. Dynamic subset keeps the payload small. -->
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
-    />
-    <!-- Tabular figures for money, stats and chart numbers. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+.topbar{
+  position:sticky; top:0; z-index:40;
+  display:flex; align-items:center; gap:14px;
+  padding:0 18px; height:54px;
+  background:rgba(10,10,11,.92); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--ink-line);
+}
+.brand{display:flex; align-items:center; gap:10px; min-width:0}
+.mark{
+  width:26px; height:26px; border-radius:6px; flex:none;
+  background:var(--neon); box-shadow:0 0 18px var(--neon-glow);
+  display:grid; place-items:center; font-size:13px; font-weight:800; color:#fff;
+}
+.co{min-width:0}
+.co-n{font-size:14px; font-weight:600; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:34vw}
+.co-s{font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; color:var(--dim); text-transform:uppercase}
+.tstats{margin-left:auto; display:flex; align-items:center; gap:0}
+.tstat{padding:0 14px; border-left:1px solid var(--ink-line); text-align:right; line-height:1.2}
+.tstat:first-child{border-left:0}
+.tstat b{display:block; font-family:var(--mono); font-size:13.5px; font-weight:600; font-variant-numeric:tabular-nums}
+.tstat span{display:block; font-family:var(--mono); font-size:9px; letter-spacing:.1em; color:var(--dim); text-transform:uppercase}
+.tstat b.hot{color:var(--neon)}
+.tstat b.warn{color:#FFB020}
+@media (max-width:640px){
+  .topbar{padding:0 12px; gap:8px}
+  .tstat{padding:0 8px}
+  .tstat b{font-size:12.5px}
+  .tstat.hide-sm{display:none}
+  .co-n{max-width:30vw; font-size:13px}
+}
+
+/* stepper */
+.steps{display:flex; gap:0; padding:0 18px; height:38px; align-items:center; border-bottom:1px solid var(--ink-line); background:var(--ink); overflow-x:auto; scrollbar-width:none}
+.steps::-webkit-scrollbar{display:none}
+.step{display:flex; align-items:center; gap:7px; padding:0 13px 0 0; margin-right:13px; white-space:nowrap; position:relative}
+.step:after{content:""; position:absolute; right:0; top:50%; width:6px; height:1px; background:var(--ink-line)}
+.step:last-child:after{display:none}
+.step i{font-style:normal; font-family:var(--mono); font-size:9.5px; width:16px; height:16px; border-radius:4px; display:grid; place-items:center; border:1px solid var(--ink-line); color:var(--dim)}
+.step span{font-size:11.5px; color:var(--dim)}
+.step.done i{border-color:rgba(255,31,61,.35); color:var(--neon); background:rgba(255,31,61,.08)}
+.step.done span{color:rgba(255,255,255,.55)}
+.step.now i{background:var(--neon); border-color:var(--neon); color:#fff; box-shadow:0 0 14px var(--neon-glow)}
+.step.now span{color:var(--paper); font-weight:600}
+
+main{flex:1; padding:22px 18px 120px; max-width:1320px; width:100%; margin:0 auto}
+
+/* ---------- generic ---------- */
+.hd{display:flex; align-items:flex-end; gap:16px; margin-bottom:18px}
+.hd h2{font-size:24px}
+.hd .line{flex:1; height:1px; background:var(--ink-line); margin-bottom:9px}
+.hd .hint{font-size:12px; color:var(--muted); margin-bottom:4px; text-align:right; max-width:38ch}
+
+.cols{display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:18px; align-items:start}
+@media (max-width:1000px){.cols{grid-template-columns:minmax(0,1fr)}}
+
+.card{background:var(--ink-soft); border:1px solid var(--ink-line); border-radius:12px; overflow:hidden}
+.card>.h{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 16px; border-bottom:1px solid var(--ink-line)}
+.card>.h h3{font-size:14.5px}
+.card>.b{padding:16px}
+.card.paper{background:var(--paper); color:var(--ink); border-color:var(--paper-line)}
+.card.paper>.h{border-color:var(--paper-line)}
+.card.paper .kicker{color:rgba(10,10,11,.55)}
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  height:40px; padding:0 18px; border-radius:6px; border:1px solid var(--ink-line);
+  background:transparent; color:var(--paper); font-size:13.5px; font-weight:600;
+  transition:background .15s,border-color .15s,transform .08s;
+}
+.btn:hover{border-color:rgba(255,255,255,.28); background:rgba(255,255,255,.04)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--neon); border-color:var(--neon); color:#fff; box-shadow:0 0 0 1px var(--neon),0 0 26px var(--neon-glow)}
+.btn.primary:hover{background:var(--neon-dim); border-color:var(--neon-dim)}
+.btn.lg{height:48px; padding:0 26px; font-size:15px}
+.btn:disabled{opacity:.38; cursor:not-allowed; box-shadow:none; transform:none}
+.btn.ghost{border-color:transparent; color:var(--muted)}
+.btn.ghost:hover{color:var(--paper)}
+:focus-visible{outline:2px solid var(--neon); outline-offset:2px}
+
+.field{display:block; margin-bottom:14px}
+.field>span{display:block; font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); margin-bottom:6px}
+.inp{
+  width:100%; height:40px; padding:0 12px; border-radius:6px;
+  background:var(--ink-2); border:1px solid var(--ink-line); color:var(--paper); font-size:14px;
+}
+.inp:focus{border-color:var(--neon); outline:none}
+select.inp{appearance:none; background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%); background-position:calc(100% - 16px) 17px,calc(100% - 11px) 17px; background-size:5px 5px,5px 5px; background-repeat:no-repeat}
+.hintline{font-size:11.5px; color:var(--muted); margin:-8px 0 14px}
+
+.chips{display:flex; flex-wrap:wrap; gap:7px}
+.chip{
+  padding:7px 12px; border-radius:6px; border:1px solid var(--ink-line);
+  background:var(--ink-2); color:var(--muted); font-size:12.5px; transition:.14s;
+}
+.chip:hover{color:var(--paper); border-color:rgba(255,255,255,.25)}
+.chip.on{background:rgba(255,31,61,.1); border-color:var(--neon); color:var(--paper); font-weight:600}
+
+.tag{display:inline-block; padding:2px 7px; border-radius:4px; font-size:10.5px; font-family:var(--mono); letter-spacing:.04em; border:1px solid var(--ink-line); color:var(--muted)}
+.tag.neon{border-color:rgba(255,31,61,.4); background:rgba(255,31,61,.1); color:var(--neon)}
+.tag.fan{border-color:var(--fan); color:var(--fan); background:color-mix(in srgb,var(--fan) 12%,transparent)}
+
+.bar{height:4px; border-radius:3px; background:var(--ink-line); overflow:hidden}
+.bar>i{display:block; height:100%; background:var(--neon); border-radius:3px; transition:width .5s cubic-bezier(.22,1,.36,1)}
+.bar.calm>i{background:var(--muted)}
+.bar.warn>i{background:#FFB020}
+
+.prange{-webkit-appearance:none; appearance:none; width:100%; height:4px; border-radius:3px; background:var(--ink-line); outline:none}
+.prange::-webkit-slider-thumb{-webkit-appearance:none; width:15px; height:15px; border-radius:50%; background:var(--neon); border:2px solid var(--ink-soft); box-shadow:0 0 10px var(--neon-glow); cursor:pointer}
+.prange::-moz-range-thumb{width:13px; height:13px; border-radius:50%; background:var(--neon); border:2px solid var(--ink-soft); cursor:pointer}
+.stackbar{display:flex; height:9px; margin-top:13px; border-radius:4px; overflow:hidden; border:1px solid var(--ink-line)}
+.stackbar span{display:block; transition:width .25s}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.grid3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
+.grid4{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px}
+@media (max-width:760px){.grid3,.grid4{grid-template-columns:1fr 1fr} .grid2{grid-template-columns:1fr}}
+
+.metric{border:1px solid var(--ink-line); border-radius:10px; padding:13px 14px; background:var(--ink-2)}
+.metric .v{font-family:var(--mono); font-size:22px; font-weight:600; letter-spacing:-.02em; margin-top:5px}
+.metric .v.hot{color:var(--neon)}
+.metric .s{font-size:11.5px; color:var(--muted); margin-top:4px}
+
+/* ---------- intro ---------- */
+.intro{min-height:100vh; display:grid; place-items:center; text-align:center; padding:30px 20px; position:relative; overflow:hidden}
+.intro .glowbg{position:absolute; width:640px; height:640px; border-radius:50%; background:radial-gradient(circle,rgba(255,31,61,.18),transparent 62%); filter:blur(20px); animation:pulse 5s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1); opacity:.85}50%{transform:scale(1.12); opacity:1}}
+.intro .in{position:relative; max-width:560px}
+.intro .kick{font-family:var(--mono); font-size:11px; letter-spacing:.4em; color:var(--neon); text-transform:uppercase}
+.intro h1{font-size:clamp(30px,7vw,52px); line-height:1.06; margin:14px 0 0; letter-spacing:-.035em}
+.intro h1 em{font-style:normal; color:var(--neon); text-shadow:0 0 34px var(--neon-glow)}
+.intro .sub{color:var(--muted); margin:18px auto 0; font-size:14px; max-width:44ch}
+.intro .cine{margin:26px auto 0; min-height:52px; font-size:13.5px; color:rgba(255,255,255,.8)}
+.intro .cine p{margin:0 0 6px; opacity:0; animation:fadein .7s forwards}
+@keyframes fadein{to{opacity:1}}
+.intro .acts{margin-top:30px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap}
+
+/* ---------- roster ---------- */
+.tcard{
+  border:1px solid var(--ink-line); border-radius:10px; background:var(--ink-2);
+  padding:12px; display:flex; gap:11px; align-items:flex-start; text-align:left; width:100%;
+  color:inherit; transition:.15s;
+}
+.tcard.sel{border-color:var(--neon); background:rgba(255,31,61,.07)}
+.tcard.pick{cursor:pointer}
+.tcard.pick:hover{border-color:rgba(255,255,255,.3)}
+.av{width:40px; height:40px; border-radius:50%; flex:none; display:grid; place-items:center; font-size:15px; font-weight:700; color:#fff}
+.tinfo{min-width:0; flex:1}
+.tname{font-size:14px; font-weight:600; display:flex; align-items:center; gap:6px; flex-wrap:wrap}
+.tmeta{font-family:var(--mono); font-size:10.5px; color:var(--dim); margin-top:2px}
+.tov{text-align:right; flex:none}
+.tov b{display:block; font-family:var(--mono); font-size:19px; font-weight:600; line-height:1}
+.statrow{display:grid; grid-template-columns:26px 1fr 26px; gap:7px; align-items:center; margin-top:5px; font-family:var(--mono); font-size:10px; color:var(--dim)}
+.statrow .n{text-align:right; color:rgba(255,255,255,.75)}
+
+/* ---------- schedule board ---------- */
+.slots{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px}
+@media (max-width:640px){.slots{grid-template-columns:1fr}}
+.slot{
+  min-height:92px; border-radius:10px; border:1px dashed var(--ink-line);
+  background:var(--ink-2); padding:12px; text-align:left; color:inherit;
+  display:flex; flex-direction:column; justify-content:center; gap:5px; transition:.15s;
+}
+.slot.empty{color:var(--dim); align-items:center; justify-content:center; text-align:center; font-size:12px}
+.slot.full{border-style:solid; border-color:rgba(255,31,61,.42); background:rgba(255,31,61,.06)}
+.slot .sl-n{font-family:var(--mono); font-size:9.5px; letter-spacing:.12em; color:var(--dim); text-transform:uppercase}
+.slot .sl-t{font-size:14px; font-weight:600}
+.slot .sl-d{font-size:11px; color:var(--muted)}
+.slot.full:hover{border-color:var(--neon)}
+
+.palette{display:grid; grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); gap:9px}
+.prog{
+  border:1px solid var(--ink-line); border-radius:9px; background:var(--ink-2);
+  padding:11px 12px; text-align:left; color:inherit; transition:.14s;
+}
+.prog:hover:not(:disabled){border-color:var(--neon); background:rgba(255,31,61,.06)}
+.prog:disabled{opacity:.35; cursor:not-allowed}
+.prog b{display:block; font-size:13px; font-weight:600}
+.prog small{display:block; font-size:10.5px; color:var(--muted); margin-top:3px; line-height:1.45}
+.prog .fx{margin-top:6px; display:flex; flex-wrap:wrap; gap:4px}
+.fxpill{font-family:var(--mono); font-size:9.5px; padding:1px 5px; border-radius:3px; border:1px solid var(--ink-line); color:var(--dim)}
+.fxpill.up{color:var(--neon); border-color:rgba(255,31,61,.3)}
+.fxpill.tire{color:#FFB020; border-color:rgba(255,176,32,.3)}
+
+.recap{display:flex; flex-direction:column; gap:8px}
+.rline{display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; font-size:12.5px; padding:8px 0; border-bottom:1px solid var(--ink-line)}
+.rline:last-child{border-bottom:0}
+.rline .d{font-family:var(--mono); font-size:12px; color:var(--neon)}
+
+/* ---------- phone ---------- */
+#phone{
+  position:fixed; right:16px; bottom:78px; z-index:60;
+  width:296px; max-width:calc(100vw - 32px);
+  border-radius:22px; background:#0d0d10; border:1px solid #2c2c33;
+  box-shadow:0 18px 60px rgba(0,0,0,.72),0 0 0 1px rgba(255,255,255,.04);
+  overflow:hidden; display:none; flex-direction:column;
+}
+#phone.on{display:flex}
+.ph-notch{height:20px; display:grid; place-items:center}
+.ph-notch i{display:block; width:56px; height:5px; border-radius:3px; background:#26262c}
+.ph-hd{display:flex; align-items:center; gap:8px; padding:6px 13px 9px; border-bottom:1px solid #1f1f25}
+.ph-hd b{font-size:12.5px; font-weight:700; letter-spacing:-.01em}
+.ph-live{display:inline-flex; align-items:center; gap:4px; font-family:var(--mono); font-size:8.5px; letter-spacing:.1em; color:var(--neon); margin-left:auto}
+.ph-live i{width:5px; height:5px; border-radius:50%; background:var(--neon); animation:blip 1.4s infinite}
+@keyframes blip{0%,100%{opacity:1}50%{opacity:.2}}
+.ph-x{margin-left:6px; background:none; border:0; color:var(--muted); font-size:15px; line-height:1; padding:2px 4px}
+.ph-feed{height:290px; overflow-y:auto; padding:8px 11px 12px; scrollbar-width:thin}
+.ph-feed::-webkit-scrollbar{width:4px}
+.ph-feed::-webkit-scrollbar-thumb{background:#2a2a31; border-radius:3px}
+.post{display:flex; gap:8px; padding:9px 0; border-bottom:1px solid #191920; animation:slidein .38s cubic-bezier(.22,1,.36,1)}
+.post:last-child{border-bottom:0}
+@keyframes slidein{from{opacity:0; transform:translateY(8px)}to{opacity:1; transform:none}}
+.post .pa{width:26px; height:26px; border-radius:50%; flex:none; display:grid; place-items:center; font-size:10px; font-weight:700; color:#fff}
+.post .pb{min-width:0; flex:1}
+.post .pn{font-size:11px; font-weight:600; display:flex; gap:5px; align-items:baseline}
+.post .pn s{text-decoration:none; font-family:var(--mono); font-size:9.5px; color:#5d5d68; font-weight:400}
+.ptag{font-family:var(--mono); font-size:8px; letter-spacing:.06em; padding:1px 4px; border-radius:3px; border:1px solid; white-space:nowrap}
+.ptag.pos{color:var(--neon); border-color:rgba(255,31,61,.42); background:rgba(255,31,61,.09)}
+.ptag.neg{color:#FFB020; border-color:rgba(255,176,32,.42); background:rgba(255,176,32,.09)}
+.post.pos{box-shadow:inset 2px 0 0 rgba(255,31,61,.55)}
+.post.neg{box-shadow:inset 2px 0 0 rgba(255,176,32,.55)}
+.post.pos,.post.neg{margin:0 -11px; padding:9px 11px}
+.post .pt{font-size:11.5px; line-height:1.5; color:#d6d6dc; margin-top:2px}
+.post .pm{display:flex; gap:12px; margin-top:5px; font-family:var(--mono); font-size:9px; color:#5d5d68}
+.post .pm b{color:var(--neon); font-weight:500}
+.post.hot{background:linear-gradient(90deg,rgba(255,31,61,.07),transparent); margin:0 -11px; padding:9px 11px}
+.ph-empty{padding:36px 14px; text-align:center; color:#4e4e58; font-size:11.5px}
+#phoneBtn{
+  position:fixed; right:16px; bottom:78px; z-index:59;
+  width:52px; height:52px; border-radius:50%; border:1px solid var(--ink-line);
+  background:var(--ink-soft); color:var(--paper); font-size:19px; display:none; place-items:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.6);
+}
+#phoneBtn.on{display:grid}
+#phoneBtn .badge{
+  position:absolute; top:-3px; right:-3px; min-width:19px; height:19px; padding:0 5px;
+  border-radius:10px; background:var(--neon); color:#fff; font-family:var(--mono); font-size:10px;
+  display:grid; place-items:center; box-shadow:0 0 14px var(--neon-glow);
+}
+@media (max-width:520px){
+  #phone{right:10px; width:calc(100vw - 20px)}
+  .ph-feed{height:220px}
+}
+/* On wide screens the open phone reserves its own column instead of covering cards. */
+@media (min-width:1080px){ body.ph-open main{padding-right:328px} }
+
+/* ---------- footer CTA ---------- */
+.cta{
+  position:fixed; left:0; right:0; bottom:0; z-index:50;
+  display:flex; align-items:center; gap:14px;
+  padding:12px 18px; background:rgba(10,10,11,.94); backdrop-filter:blur(12px);
+  border-top:1px solid var(--ink-line);
+}
+.cta .txt{min-width:0; flex:1}
+.cta .txt b{display:block; font-size:13px; font-weight:600}
+.cta .txt span{display:block; font-size:11.5px; color:var(--muted)}
+.cta .btn{flex:none}
+@media (max-width:520px){.cta .txt span{display:none}}
+main{padding-bottom:104px}
+@media (min-width:521px){main{padding-bottom:96px}}
+
+/* results */
+.say{display:flex; gap:10px; align-items:flex-start}
+.say-n{font-size:11.5px; font-weight:600; color:var(--muted)}
+.say-t{margin:2px 0 0; font-size:13px; line-height:1.55; color:rgba(255,255,255,.88)}
+.ship{border:1px solid rgba(255,31,61,.32); background:rgba(255,31,61,.06); border-radius:10px; padding:12px 13px}
+.ship-row{display:flex; align-items:center; gap:9px; margin-top:8px}
+.ship-n{font-size:15px; font-weight:700; letter-spacing:-.01em}
+.ship-s{font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:2px}
+.ship-o{margin:9px 0 0; font-size:11.5px; color:rgba(255,255,255,.72); line-height:1.55}
+.gradebox{display:flex; align-items:center; gap:20px; flex-wrap:wrap}
+.gradebig{
+  width:104px; height:104px; border-radius:16px; flex:none; display:grid; place-items:center;
+  font-family:var(--mono); font-size:46px; font-weight:700; color:var(--neon);
+  border:1px solid rgba(255,31,61,.4); background:rgba(255,31,61,.08); box-shadow:0 0 40px var(--neon-glow) inset;
+}
+.money{display:grid; gap:9px}
+.mrow{display:grid; grid-template-columns:1fr auto; gap:14px; align-items:baseline; padding:9px 0; border-bottom:1px solid var(--ink-line)}
+.mrow:last-child{border-bottom:0}
+.mrow .l{font-size:12.5px; color:var(--muted)}
+.mrow .l b{display:block; color:var(--paper); font-size:13.5px; font-weight:600}
+.mrow .v{font-family:var(--mono); font-size:16px; font-weight:600; font-variant-numeric:tabular-nums}
+.mrow.total .v{font-size:23px; color:var(--neon)}
+.mrow.cost .v{color:#FFB020}
+.wchart{display:flex; align-items:flex-end; gap:8px; height:110px; padding-top:10px}
+.wcol{flex:1; display:flex; flex-direction:column; justify-content:flex-end; gap:6px; text-align:center}
+.wcol .cb{border-radius:4px 4px 0 0; background:linear-gradient(180deg,var(--neon),rgba(255,31,61,.25)); min-height:4px; transition:height .6s cubic-bezier(.22,1,.36,1)}
+.wcol .cl{font-family:var(--mono); font-size:9.5px; color:var(--dim)}
+
+/* ---------- modal ---------- */
+.scrim{position:fixed; inset:0; z-index:90; background:rgba(4,4,6,.78); backdrop-filter:blur(6px); display:grid; place-items:center; padding:20px; animation:fadein .2s}
+.dlg{
+  width:min(520px,100%); max-height:86vh; overflow-y:auto;
+  background:var(--ink-soft); border:1px solid var(--ink-line); border-radius:14px;
+  box-shadow:0 26px 80px rgba(0,0,0,.7); animation:pop .26s cubic-bezier(.22,1,.36,1);
+}
+@keyframes pop{from{opacity:0; transform:translateY(14px) scale(.98)}to{opacity:1; transform:none}}
+.dlg .dh{padding:18px 20px 0}
+.dlg .dh h3{font-size:19px; margin-top:6px}
+.dlg .db2{padding:14px 20px 4px; font-size:13.5px; color:rgba(255,255,255,.82); line-height:1.65}
+.dlg .db2 b{color:var(--neon); font-weight:600}
+.dlg .df{padding:14px 20px 20px; display:grid; gap:8px}
+.opt{
+  text-align:left; padding:13px 15px; border-radius:9px; border:1px solid var(--ink-line);
+  background:var(--ink-2); color:inherit; transition:.14s;
+}
+.opt:hover{border-color:var(--neon); background:rgba(255,31,61,.07)}
+.opt b{display:block; font-size:13.5px; font-weight:600}
+.opt small{display:block; font-size:11.5px; color:var(--muted); margin-top:3px; line-height:1.5}
+.opt.danger:hover{border-color:#FFB020; background:rgba(255,176,32,.08)}
+.dlg .fx2{display:flex; flex-wrap:wrap; gap:5px; margin-top:7px}
+.tone-bad .dh h3{color:#FFB020}
+.tone-good .dh h3{color:var(--neon)}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+
+<div id="app"></div>
+<div id="modal"></div>
+<button id="phoneBtn" aria-label="팬 반응 휴대폰 열기">📱<span class="badge tabular" id="phBadge">0</span></button>
+<div id="phone" role="complementary" aria-label="팬 반응 피드">
+  <div class="ph-notch"><i></i></div>
+  <div class="ph-hd">
+    <b id="phTitle">팬 반응</b>
+    <span class="ph-live"><i></i>LIVE</span>
+    <button class="ph-x" id="phClose" aria-label="휴대폰 닫기">✕</button>
+  </div>
+  <div class="ph-feed" id="phFeed"><div class="ph-empty">아직 조용합니다.</div></div>
+</div>
+
+<script>
+"use strict";
+/* =========================================================================
+   IDOL AGENCY SIMULATOR — single-file playable build
+   Flow: intro → 회사 설립 → 연습생 등록 → 트레이닝 4주 → 데뷔조
+         → 뮤비/음원 제작 → 컴백 4주(+휴대폰 팬반응) → 정산
+   ========================================================================= */
+
+const KEY = "ias-play-v3";
+const $  = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+/* ---------- rng ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function rnd(){ S.cur=(S.cur+1)|0; return mulberry32((S.seed + S.cur*2654435761)|0)(); }
+const ri   = (a,b) => a + Math.floor(rnd()*(b-a+1));
+const pick = a => a[Math.floor(rnd()*a.length)];
+function hash(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return h|0;}
+
+/* ---------- korean particles ---------- */
+function hasJong(w){ const c=w.charCodeAt(w.length-1); if(c<0xAC00||c>0xD7A3) return false; return (c-0xAC00)%28!==0; }
+function josa(w,pair){
+  const map={"은는":["은","는"],"이가":["이","가"],"을를":["을","를"],"과와":["과","와"],"으로로":["으로","로"],"이라는":["이라는","라는"],"이야":["이야","야"]};
+  const p=map[pair]; return w + (hasJong(w)?p[0]:p[1]);
+}
+
+/* ---------- format ---------- */
+const won  = n => "₩" + Math.round(n).toLocaleString("ko-KR");
+function wonShort(n){
+  n=Math.round(n); const s=n<0?"-":""; n=Math.abs(n);
+  if(n>=100000000){const e=Math.floor(n/100000000),m=Math.round((n%100000000)/10000);return s+"₩"+e+"억"+(m?" "+m.toLocaleString()+"만":"");}
+  if(n>=10000) return s+"₩"+Math.round(n/10000).toLocaleString()+"만";
+  return s+"₩"+n.toLocaleString();
+}
+function cnt(n,u){
+  n=Math.round(n);
+  if(n>=100000000){return (n/100000000).toFixed(1).replace(/\.0$/,"")+"억"+u;}
+  if(n>=10000){const e=Math.floor(n/10000),r=n%10000;return e+"만"+(r?" "+r.toLocaleString():"")+u;}
+  return n.toLocaleString()+u;
+}
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+
+/* ---------- static data ---------- */
+const STAT_KEYS   = ["vocal","dance","rap","visual","charisma","mental"];
+const STAT_LABELS = {vocal:"보컬",dance:"댄스",rap:"랩",visual:"비주얼",charisma:"매력",mental:"멘탈"};
+
+const POSITIONS = {
+  leader  :{label:"리더",     bias:{mental:17, charisma:9, vocal:4}, note:"팀 효율 보정"},
+  vocal   :{label:"메인보컬", bias:{vocal:20, mental:5}},
+  subVocal:{label:"서브보컬", bias:{vocal:12, dance:6, charisma:4}},
+  dance   :{label:"메인댄서", bias:{dance:20, charisma:5}},
+  subDance:{label:"서브댄서", bias:{dance:12, visual:6, charisma:4}},
+  rap     :{label:"래퍼",     bias:{rap:20,  charisma:5}},
+  visual  :{label:"비주얼",   bias:{visual:20, charisma:7}},
+  all     :{label:"올라운더", bias:{vocal:7,dance:7,rap:7,visual:7,charisma:7,mental:7}},
+};
+const CONTRACT_YEARS = 7, MONTHS_PER_CYCLE = 6;
+const GENDERS = {f:"여성", m:"남성"};
+const GRADES  = [
+  {g:"S", w:6,  mult:1.55, cap:96},
+  {g:"A", w:14, mult:1.30, cap:88},
+  {g:"B", w:30, mult:1.10, cap:80},
+  {g:"C", w:32, mult:0.92, cap:72},
+  {g:"D", w:18, mult:0.75, cap:64},
+];
+const DISTRICTS = {
+  gangnam:{label:"강남구 청담동", rent:900000,  note:"업계 한복판. 임대료가 비싼 만큼 미팅이 들어옵니다.", aw:6},
+  mapo   :{label:"마포구 합정동", rent:600000,  note:"인디와 방송국 사이. 무난하고 균형 잡힌 선택.",     aw:3},
+  seongsu:{label:"성동구 성수동", rent:700000,  note:"콘텐츠 스튜디오 밀집. 자체 콘텐츠에 유리합니다.",  aw:4},
+  guro   :{label:"구로구 구로동", rent:350000,  note:"싸다. 대신 아무도 찾아오지 않습니다.",             aw:1},
+};
+
+/* training programs */
+const TRAIN = {
+  vocalL :{label:"보컬 레슨",   desc:"발성과 음정을 다집니다.",         gain:{vocal:7},                fat:12},
+  danceL :{label:"안무 연습",   desc:"칼군무는 여기서 만들어집니다.",   gain:{dance:7},                fat:14},
+  rapL   :{label:"랩 메이킹",   desc:"플로우와 딕션을 잡습니다.",       gain:{rap:7},                  fat:11},
+  camera :{label:"카메라 워크", desc:"표정과 앵글 장악력을 키웁니다.",  gain:{visual:5, charisma:4},   fat:9 },
+  mental :{label:"멘탈 케어",   desc:"상담과 컨디션 관리.",             gain:{mental:6},               fat:3 },
+  monitor:{label:"자체 모니터링",desc:"영상을 함께 보고 뜯어고칩니다.", gain:{vocal:2,dance:2,rap:2,visual:2,charisma:2}, fat:8},
+  rest   :{label:"휴식",        desc:"피로를 크게 덜어냅니다.",         gain:{},                       fat:-22},
+};
+
+/* production tasks */
+const ALBUM_TYPES = {
+  single:{label:"싱글",   tracks:2, cost:0.72, sales:0.86, stream:0.92, note:"두 곡. 싸고 빠릅니다."},
+  mini  :{label:"미니앨범", tracks:4, cost:1.00, sales:1.00, stream:1.00, note:"네 곡. 신인의 표준."},
+  full  :{label:"정규앨범", tracks:6, cost:1.48, sales:1.26, stream:1.16, note:"여섯 곡. 비싸지만 값을 합니다."},
+};
+const TRACK_WORDS = [["새벽","한낮","자정","여름","겨울","우리","마지막","첫"],
+                     ["세 시","산책","비행","고백","약속","파도","불꽃","편지","목소리","궤도"]];
+function autoTitle(){ return pick(TRACK_WORDS[0]) + " " + pick(TRACK_WORDS[1]); }
+
+/** 파트 합은 항상 100. 하나를 건드리면 나머지가 비례로 흡수합니다. */
+function rebalanceParts(id, val){
+  const ids = S.group.members, parts = S.album.parts;
+  val = clamp(Math.round(val), 0, 100);
+  const others = ids.filter(x=>x!==id);
+  if(!others.length){ parts[id] = 100; return; }
+  const restOld = others.reduce((n,x)=>n+(parts[x]||0), 0);
+  const restNew = 100 - val;
+  others.forEach(x=>{ parts[x] = restOld>0 ? Math.round((parts[x]||0)/restOld*restNew) : Math.round(restNew/others.length); });
+  parts[id] = val;
+  const drift = 100 - ids.reduce((n,x)=>n+(parts[x]||0), 0);
+  if(drift){ const big = others.slice().sort((a,b)=>parts[b]-parts[a])[0] || id; parts[big] = clamp(parts[big]+drift, 0, 100); }
+}
+function evenParts(){
+  const ids = S.group.members, base = Math.floor(100/ids.length);
+  S.album.parts = {};
+  ids.forEach(x=> S.album.parts[x] = base);
+  S.album.parts[ids[0]] += 100 - base*ids.length;
+}
+/** 파트를 잘 맞는 멤버에게 주면 곡이 좋아집니다. */
+function partScore(){
+  const ms = memberList(); if(!ms.length) return 50;
+  let v = 0;
+  ms.forEach(m=>{
+    const share = (S.album.parts[m.id]||0)/100;
+    const fit = m.stats.vocal*0.42 + m.stats.rap*0.18 + m.stats.charisma*0.22 + m.stats.dance*0.18;
+    v += share * fit;
+  });
+  return Math.round(v);
+}
+/** 분배가 고르면 팀이 안정되고, 쏠리면 화제는 되지만 사이가 상합니다. */
+function partSpread(){
+  const ms = memberList(); if(ms.length<2) return 0;
+  const even = 100/ms.length;
+  const dev = ms.reduce((n,m)=>n+Math.abs((S.album.parts[m.id]||0)-even),0)/ms.length;
+  return Math.round(dev/even*100);   // 균등 대비 몇 % 벗어났는지
+}
+
+const PROD = [
+  {id:"record", label:"음원 녹음",   kicker:"Recording", axis:"song",  desc:"타이틀곡 보컬·랩 레코딩과 믹싱."},
+  {id:"mv",     label:"뮤직비디오",  kicker:"MV Shoot",  axis:"mv",    desc:"세트, 카메라, 편집까지 하루 촬영."},
+  {id:"chore",  label:"안무·재킷",   kicker:"Choreo",    axis:"stage", desc:"포인트 안무 제작과 재킷 촬영."},
+  {id:"promo",  label:"티저·마케팅", kicker:"Marketing", axis:"buzz",  desc:"공개 전 티저와 온라인 집행."},
+];
+const TIERS = [
+  {id:"low",  label:"저예산", cost:150000, q:38, note:"되긴 됩니다."},
+  {id:"mid",  label:"표준",   cost:420000, q:62, note:"업계 평균."},
+  {id:"high", label:"고급",   cost:1400000, q:86, note:"확실히 티가 납니다."},
+];
+
+/* comeback activities */
+const ACTS = {
+  music :{label:"음악방송",   desc:"지상파·케이블 무대에 섭니다.",   fat:16, sales:1.00, stream:0.55, fan:0.45, buzz:0.55, aware:1.00},
+  variety:{label:"예능 출연", desc:"대중 인지도를 크게 올립니다.",   fat:14, sales:0.30, stream:0.45, fan:0.35, buzz:0.75, aware:1.45},
+  fansign:{label:"팬사인회",  desc:"앨범이 실제로 팔리는 자리.",     fat:12, sales:1.65, stream:0.10, fan:0.95, buzz:0.25, aware:0.20},
+  short :{label:"숏폼 챌린지",desc:"음원 역주행의 유일한 통로.",     fat:8,  sales:0.25, stream:1.55, fan:0.35, buzz:1.45, aware:0.55},
+  own   :{label:"자체 콘텐츠",desc:"팬덤을 두껍게 만듭니다.",        fat:7,  sales:0.35, stream:0.30, fan:1.50, buzz:0.45, aware:0.20},
+  radio :{label:"라디오 출연", desc:"가볍고 꾸준한 노출.",          fat:6,  sales:0.30, stream:0.40, fan:0.30, buzz:0.40, aware:0.60},
+  rest  :{label:"휴식",       desc:"다음 주를 위해 비웁니다.",       fat:-24,sales:0,    stream:0,    fan:0.10, buzz:0,    aware:0},
+  concert:{label:"단독 콘서트", desc:"팬덤 5만 이상부터 열 수 있습니다.", fat:22, sales:1.20, stream:0.30, fan:1.70, buzz:0.90, aware:0.50, req:{fan:50000},  ticket:true},
+  cf    :{label:"광고 촬영",   desc:"인지도 90부터 제의가 들어옵니다.", fat:10, sales:0.20, stream:0.15, fan:0.25, buzz:0.55, aware:0.90, req:{aware:90}, money:3200000},
+  itv   :{label:"방송 인터뷰", desc:"인지도 90부터 섭외가 옵니다.",     fat:7,  sales:0.20, stream:0.35, fan:0.30, buzz:0.60, aware:1.15, req:{aware:90}},
+  yearend:{label:"연말 무대",  desc:"인지도 90부터 초청됩니다.",        fat:20, sales:0.90, stream:1.20, fan:0.90, buzz:1.70, aware:1.60, req:{aware:90}},
+};
+function actLocked(k){
+  const r = ACTS[k].req; if(!r) return null;
+  if(r.aware != null && S.aware < r.aware) return `인지도 ${r.aware} 필요 · 현재 ${Math.round(S.aware)}`;
+  if(r.fan   != null && S.fan   < r.fan)   return `팬덤 ${cnt(r.fan,"명")} 필요`;
+  return null;
+}
+
+/* fan post templates */
+const HANDLES = ["덕질중독","새벽세시","무대직캠","앨범수집가","입덕부정기","포카교환","콘서트대기","실시간응원","음방출근","팬싸당첨","최애일지","차트지킴이"];
+const POSTS = {
+  concert:["단콘 티켓 잡았다 손 떨림 아직 안 멈춤","{m} 앵콜 무대에서 울었어 나도 같이 울었음","콘서트 끝나고 집 가는 길이 제일 슬프다","{g} 단독 콘서트 규모가 벌써 이 정도라니"],
+  cf     :["{m} 광고 화면발 뭐야 이거 본편보다 잘 나옴","광고 계약 축하해 {g} 이제 TV에서도 보인다","브랜드 안목 좋다 {m} 딱이야"],
+  itv    :["인터뷰 답변 진짜 담백해서 좋았음","{m} 인터뷰 보고 사람 됨됨이 느껴짐","{g} 인터뷰 클립 계속 돌려봄"],
+  yearend:["연말 무대 라인업에 {g} 있다 미쳤다","{m} 연말 무대 의상 실화냐","올해 연말은 {g}로 마무리"],
+  music  :["오늘 무대 {m} 표정 봤어요? 진심 미쳤음","음방 카메라 감독님 {m} 좀 더 잡아주세요 제발","{g} 무대 직캠 벌써 돌려보는 중","라이브 안정감 미쳤다 {m} 진짜 연습 많이 했나봐","무대 끝나고 인사하는 거 너무 예의 바름"],
+  variety:["예능에서 {m} 텐션 뭔데 계속 웃음","{g} 이름 처음 들어봤는데 검색해서 왔습니다","이거 클립 알고리즘 타는 중","{m} 말솜씨 좋다 고정 하나 잡으면 좋겠음","예능 나오고 나서 주변에서 물어보기 시작함"],
+  fansign:["오늘 팬싸 {m} 눈 마주쳤는데 심장 나감","앨범 20장 샀는데 후회 없음","{m} 손편지 써줘서 울었어요 진짜","팬싸 분위기 너무 좋았다 스탭분들도 친절","다음 팬싸는 꼭 갈게요 {g} 사랑해"],
+  short  :["챌린지 이거 중독성 뭐야 하루종일 흥얼거림","{m} 파트 구간 반복만 30번째","알고리즘에 계속 뜨는데 결국 음원 들으러 옴","포인트 안무 따라하다가 무릎 나감","이 노래 역주행 각인데?"],
+  own    :["자컨 편집자 월급 올려주세요 진짜","{m} 브이로그 보고 입덕 확정","멤버들 케미 진짜 좋다 보기만 해도 흐뭇","자컨 매주 올려주면 안 되나요","{g} 숙소 공개 편 몇 번을 돌려보는지"],
+  radio  :["라디오에서 라이브 들었는데 음원이랑 똑같음","{m} 목소리 라디오랑 잘 어울린다","인터뷰 답변이 되게 담백해서 좋았어요","출근길에 {g} 라디오 듣는 게 루틴 됨"],
+  rest   :["이번 주 스케줄 없다던데 좀 쉬어라 제발","{m} 쉬는 동안 푹 자길","활동 없어도 기다립니다"],
+  debut  :["{g} 데뷔한다는데 콘셉트 궁금하다","신인인데 무대 영상 퀄이 왜 이럼","{m} 프로필 사진 보고 왔습니다","소속사 어디예요? 처음 보는데","{g} 티저 떴다 색감 취향인데?","연습생 시절 영상부터 봤는데 성장 서사 있음","{m} 이름 외우기 쉬워서 좋다","데뷔 쇼케이스 티켓 언제 풀리나요"],
+  hype   :["초동 {n}장 나왔대 신인 치고 대박 아님?","차트 진입했다 축하해 {g}","이 그룹 다음 앨범이 진짜 승부일 듯"],
+  ship   :["{s} 조합 자컨 언제 또 나와요","{s} 오늘 무대에서 눈 마주친 거 봤음","{s} 케미는 회사가 진짜 잘 밀어준다","{s} 클립만 스무 번째 돌려보는 중","{s} 때문에 입덕했습니다 인정합니다"],
+  hiatus :["{g} 다음 앨범 언제 나와요 기다리다 늙겠다","공백기에도 자컨은 올려주면 안 될까요","{m} 요즘 뭐 하고 지내는지 궁금","컴백 티저만 기다리는 중","{g} 계약 기간 아직 남았죠? 불안해서 물어봄","{m} 실력 늘었다는 소문 들었는데 사실인가요"],
+};
+
+/* ================= state ================= */
+let S = null;
+
+function blank(){
+  return {
+    v:4, phase:"intro", seed:Date.now()|0, cur:0,
+    money:5000000, week:0,
+    cycle:1, months:0, contractYears:CONTRACT_YEARS, renewals:0, trainWeeks:4, recruitReturn:null,
+    career:{cycles:0, sales:0, streams:0, revenue:0, profit:0, bestScore:0, bestGrade:"—", bestFirst:0, peakFan:0, last:null},
+    fanAtCycleStart:0,
+    company:{name:"", district:"mapo", ceo:""},
+    trainees:[],
+    trainWeek:1, trainPlan:[], trainLog:[],
+    group:null,
+    album:null,
+    promoWeek:1, promoPlan:[], logs:[],
+    fan:0, loyal:55, buzz:0, aware:0,
+    sales:0, streams:0,
+    costs:{contract:0, train:0, prod:0, promo:0, rent:0},
+    posts:[], unread:0,
+    result:null, settledCycle:null,
+    rivals:[], rels:[], chart:[], modal:null, extraIncome:0, seenEvents:[], pushShip:null, chatter:[],
+  };
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function loadSave(){ try{ const r=localStorage.getItem(KEY); if(!r) return null; const o=JSON.parse(r); return (o&&o.v===4)?o:null; }catch(e){ return null; } }
+function wipe(){ try{ localStorage.removeItem(KEY); }catch(e){} }
+
+/* ================= trainee ================= */
+function makeTrainee(name, gender, pos, age){
+  const gr = (()=>{ let r=rnd()*100, acc=0; for(const g of GRADES){acc+=g.w; if(r<acc) return g;} return GRADES[GRADES.length-1]; })();
+  const st = {};
+  STAT_KEYS.forEach(k => st[k] = ri(26,44));
+  const bias = POSITIONS[pos].bias;
+  for(const k in bias) st[k] = clamp(st[k] + bias[k] + ri(-3,4), 20, 78);
+  return {
+    id:"t"+Math.random().toString(36).slice(2,8),
+    name, gender, pos, stats:st, fat:0, age: clamp(age||18, 14, 35),
+    grade:gr.g, mult:gr.mult, cap:gr.cap,
+    color:`hsl(${ri(0,359)} 62% 52%)`,
+  };
+}
+const overall = t => Math.round(STAT_KEYS.reduce((s,k)=>s+t.stats[k],0)/6);
+function groupAvg(){
+  const ms = memberList(); if(!ms.length) return {};
+  const o={}; STAT_KEYS.forEach(k=>o[k]=Math.round(ms.reduce((s,t)=>s+t.stats[k],0)/ms.length));
+  o.overall = Math.round(STAT_KEYS.reduce((s,k)=>s+o[k],0)/6);
+  return o;
+}
+const memberList = () => (S.group ? S.group.members.map(id=>S.trainees.find(t=>t.id===id)).filter(Boolean) : []);
+const T = id => S.trainees.find(t=>t.id===id);
+
+/* ================= phone ================= */
+function fanPost(kind, extra){
+  const ms = memberList();
+  const m  = ms.length ? pick(ms).name : (S.trainees.length ? pick(S.trainees).name : "멤버");
+  const g  = S.group ? S.group.name : (S.company.name || "우리 그룹");
+  const pool = POSTS[kind] || POSTS.own;
+  let raw = pick(pool);
+  for(let i=0; i<4 && S.posts[0] && S.posts[0].raw===raw && pool.length>1; i++) raw = pick(pool);
+  const fc = featuredChem();
+  const txt = raw.replace("{m}", m).replace("{g}", g)
+                 .replace("{s}", fc ? fc.ship : "우리 케미")
+                 .replace("{n}", extra != null ? Math.round(extra).toLocaleString() : "");
+  if(S.rivals.length && rnd() < 0.16){
+    const rv = pick(S.rivals);
+    return {h: pick(HANDLES)+ri(11,99), raw:"__rival",
+            txt: pick([`${rv.name}랑 비교하는 글 좀 그만 봤으면`, `${rv.name} 팬인데 ${g} 이번 곡은 인정합니다`,
+                       `${rv.name}보다 ${g}가 라이브는 낫다고 본다`, `${g}랑 ${rv.name} 무대 연달아 보는 중`]),
+            like: ri(20, 60 + Math.round(S.fan/10)), rt: ri(2, 12), hot: rnd()<0.2,
+            color:`hsl(${ri(0,359)} 55% 50%)`};
+  }
+  const h  = pick(HANDLES) + ri(11,99);
+  return {
+    h, txt, raw,
+    like: ri(12, 40 + Math.round(S.fan/9)),
+    rt:   ri(1, 8 + Math.round(S.fan/70)),
+    hot:  rnd() < 0.16,
+    color:`hsl(${ri(0,359)} 55% 50%)`,
+  };
+}
+/** 사건 선택 직후의 여론. 선택이 팬덤을 깎았으면 비판이 더 많이 올라옵니다. */
+function pushVoices(voice, fx){
+  if(!voice) return;
+  const harsh = fx && (((fx.fanPct||0) < 0) || ((fx.loyal||0) < 0));
+  const take = (arr, n) => {
+    const a = arr.slice(), out = [];
+    for(let i=0;i<n && a.length;i++) out.push(a.splice(Math.floor(rnd()*a.length),1)[0]);
+    return out;
+  };
+  const items = take(voice.pos||[], harsh?1:2).map(t=>({tone:"pos", txt:t}))
+        .concat(take(voice.neg||[], harsh?2:1).map(t=>({tone:"neg", txt:t})));
+  for(let i=items.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [items[i],items[j]]=[items[j],items[i]]; }
+  items.forEach((it,i)=> setTimeout(()=>{
+    S.posts.unshift({h: pick(HANDLES)+ri(11,99), raw:"__voice", txt: it.txt, tone: it.tone,
+                     like: ri(30, 120 + Math.round(S.fan/8)), rt: ri(3, 24), hot:false,
+                     color:`hsl(${ri(0,359)} 55% 50%)`});
+    S.posts = S.posts.slice(0,70); S.unread++; drawPhone(); save();
+  }, 360*i + 260));
+}
+
+function pushPosts(kind, n, extra, stagger){
+  for(let i=0;i<n;i++){
+    const p = fanPost(kind, extra);
+    if(stagger){
+      setTimeout(()=>{ S.posts.unshift(p); S.posts=S.posts.slice(0,70); S.unread++; drawPhone(); save(); }, 320*i + 120);
+    } else {
+      S.posts.unshift(p); S.unread++;
+    }
+  }
+  if(!stagger){ S.posts=S.posts.slice(0,70); drawPhone(); }
+}
+let phoneOpen = window.innerWidth >= 1080;
+function phoneAvailable(){ return ["produce","promo","results","hub","ending"].includes(S.phase); }
+function drawPhone(){
+  const ph=$("#phone"), btn=$("#phoneBtn");
+  if(!S || !phoneAvailable()){ ph.classList.remove("on"); btn.classList.remove("on"); document.body.classList.remove("ph-open"); return; }
+  document.body.classList.toggle("ph-open", phoneOpen);
+  if(phoneOpen){ ph.classList.add("on"); btn.classList.remove("on"); S.unread=0; }
+  else { ph.classList.remove("on"); btn.classList.add("on"); $("#phBadge").textContent = S.unread>99?"99+":S.unread; $("#phBadge").style.display = S.unread?"grid":"none"; }
+  $("#phTitle").textContent = S.group ? (S.group.fandom + " 실시간") : "팬 반응";
+  const feed=$("#phFeed");
+  if(!S.posts.length){ feed.innerHTML = '<div class="ph-empty">아직 조용합니다.<br>활동을 시작하면 반응이 올라옵니다.</div>'; return; }
+  feed.innerHTML = S.posts.map(p=>`
+    <div class="post${p.tone?" "+p.tone:(p.hot?" hot":"")}">
+      <span class="pa" style="background:${p.color}">${esc(p.h.slice(0,1))}</span>
+      <div class="pb">
+        <div class="pn">@${esc(p.h)} <s>지금</s>${p.tone?`<span class="ptag ${p.tone}">${p.tone==="pos"?"옹호":"비판"}</span>`:""}</div>
+        <div class="pt">${esc(p.txt)}</div>
+        <div class="pm"><span>♥ <b>${p.like.toLocaleString()}</b></span><span>↺ ${p.rt}</span></div>
+      </div>
+    </div>`).join("");
+  feed.scrollTop = 0;
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+
+/* ================= world: rivals, relationships, modal ================= */
+
+const RIVAL_POOL = [
+  {name:"루미너스", tier:"대형"}, {name:"블랙아웃", tier:"대형"}, {name:"세렌디", tier:"중견"},
+  {name:"NOVA9",   tier:"대형"}, {name:"하이틴",   tier:"중견"}, {name:"미드나잇", tier:"중견"},
+  {name:"코발트",   tier:"소형"}, {name:"엔젤로",   tier:"중견"}, {name:"페이드인", tier:"소형"},
+  {name:"크레센도", tier:"대형"}, {name:"리버스",   tier:"중견"}, {name:"온에어",   tier:"소형"},
+];
+const TIER_POWER = {대형:1.0, 중견:0.62, 소형:0.34};
+function makeRivals(){
+  const pool = RIVAL_POOL.slice(), out = [];
+  for(let i=0;i<4 && pool.length;i++){
+    const r = pool.splice(Math.floor(rnd()*pool.length),1)[0];
+    out.push({name:r.name, tier:r.tier, power: TIER_POWER[r.tier]*(0.8+rnd()*0.45)});
+  }
+  return out;
+}
+/** 이번 주 음원 순위: 우리 성적 대 라이벌 화력. */
+function weeklyChart(){
+  const mine = S.buzz*1.8 + S.aware*1.1 + Math.min(60, S.fan/900);
+  const rows = S.rivals.map(r=>({name:r.name, tier:r.tier, score: r.power*(78 + rnd()*0)*1}))
+                       .concat([{name:S.group.name, tier:"우리", score:mine, me:true}]);
+  rows.sort((a,b)=>b.score-a.score);
+  return rows;
+}
+
+/* ---------- relationships ---------- */
+const REL_TYPES = [
+  {id:"bestie", label:"절친",        base:[28,58]},
+  {id:"rival",  label:"라이벌",      base:[-12,26]},
+  {id:"sibling",label:"남매 같은",   base:[20,48]},
+  {id:"awkward",label:"어색한 사이", base:[-24,12]},
+  {id:"anchor", label:"버팀목",      base:[26,54]},
+  {id:"tsun",   label:"츤데레",      base:[4,34]},
+];
+const ORIGINS = {
+  bestie :["연습생 첫날 같은 방을 썼습니다.","오디션 대기실에서 서로 가사를 알려줬습니다.","같은 날 같은 곡으로 떨어진 적이 있습니다."],
+  rival  :["같은 포지션을 두고 마지막까지 겨뤘습니다.","데뷔조 발표 직전까지 서로를 의식했습니다.","연습실 거울 앞자리를 두고 늘 부딪혔습니다."],
+  sibling:["나이 차 때문에 자연스럽게 챙기는 사이가 됐습니다.","새벽 연습 끝나면 늘 같이 편의점에 갑니다.","서로 잔소리를 제일 많이 합니다."],
+  awkward:["아직 서로를 잘 모릅니다.","합류 시기가 달라 대화가 적습니다.","한 번의 오해가 아직 풀리지 않았습니다."],
+  anchor :["무대 공포증이 심할 때 손을 잡아줬습니다.","탈락 통보를 받은 날 옆에 있어줬습니다.","연습실에 마지막까지 남는 두 사람입니다."],
+  tsun   :["말은 퉁명스럽지만 늘 챙깁니다.","칭찬을 못 해서 대신 간식을 사 옵니다.","싸운 다음 날 아무 일 없다는 듯 굽니다."],
+};
+const relKey = (a,b) => [a,b].sort().join("|");
+function makeRels(ids){
+  const out = [];
+  for(let i=0;i<ids.length;i++) for(let j=i+1;j<ids.length;j++){
+    const t = pick(REL_TYPES);
+    out.push({k:relKey(ids[i],ids[j]), a:ids[i], b:ids[j], type:t.id,
+              aff: ri(t.base[0], t.base[1]), origin: pick(ORIGINS[t.id]), heat: ri(0,30), flags:{}});
+  }
+  return out;
+}
+/** 새 멤버가 합류하면 기존 멤버들과의 관계를 만들어 줍니다. */
+function syncRels(){
+  if(!S.group) return;
+  const ids = S.group.members;
+  const have = new Set(S.rels.map(r=>r.k));
+  for(let i=0;i<ids.length;i++) for(let j=i+1;j<ids.length;j++){
+    const k = relKey(ids[i], ids[j]);
+    if(have.has(k)) continue;
+    const t = pick(REL_TYPES);
+    S.rels.push({k, a:ids[i], b:ids[j], type:t.id, aff:ri(t.base[0], t.base[1]),
+                 origin: pick(ORIGINS[t.id]), heat: ri(0,20), flags:{}});
+  }
+  S.rels = S.rels.filter(r => ids.includes(r.a) && ids.includes(r.b));
+}
+const relOf = (a,b) => S.rels.find(r=>r.k===relKey(a,b));
+function shipName(n1,n2){ return (n1.slice(1,2)||n1.slice(0,1)) + (n2.slice(1,2)||n2.slice(0,1)); }
+/** 대표가 직접 지정한 대표 케미. 지정 전에는 없습니다. */
+function featuredChem(){
+  if(!S || !S.pushShip || !S.rels) return null;
+  const r = S.rels.find(x=>x.k===S.pushShip);
+  if(!r) return null;
+  const A=T(r.a), B=T(r.b);
+  if(!A || !B) return null;
+  return {r, A, B, ship: shipName(A.name, B.name)};
+}
+/** 지정 전 참고용으로 보여줄 자연 발생 1순위. */
+function hottestChem(){
+  const scored = S.rels.map(r=>{
+    const A=T(r.a), B=T(r.b); if(!A||!B) return null;
+    return {r, A, B, score: r.aff*0.6 + r.heat*1.4, ship: shipName(A.name, B.name)};
+  }).filter(Boolean).sort((x,y)=>y.score-x.score);
+  return scored[0] || null;
+}
+function relLabel(t){ return (REL_TYPES.find(x=>x.id===t)||{label:"—"}).label; }
+
+/* ---------- modal engine (artifact iframes block window.confirm) ---------- */
+function ask(m){ S.modal = m; save(); render(); }
+function closeModal(){ S.modal = null; save(); render(); }
+/** Effects are plain data so a modal survives a page reload. */
+function applyFx(fx){
+  if(!fx) return;
+  if(fx.money) S.money += fx.money;
+  if(fx.fan)   S.fan   = Math.max(0, S.fan + fx.fan);
+  if(fx.fanPct)S.fan   = Math.max(0, Math.round(S.fan * (1+fx.fanPct)));
+  if(fx.loyal) S.loyal = clamp(S.loyal + fx.loyal, 5, 100);
+  if(fx.buzz)  S.buzz  = clamp(S.buzz  + fx.buzz, 0, 100);
+  if(fx.aware) S.aware = clamp(S.aware + fx.aware, 0, 100);
+  if(fx.fat)   memberList().forEach(t=> t.fat = clamp(t.fat + fx.fat, 0, 100));
+  if(fx.relAll) S.rels.forEach(r=> r.aff = clamp(r.aff + fx.relAll, -100, 100));
+  if(fx.rel){ const r = S.rels.find(x=>x.k===fx.rel.k); if(r) r.aff = clamp(r.aff + fx.rel.d, -100, 100); }
+  if(fx.heat){ const r = S.rels.find(x=>x.k===fx.heat.k); if(r) r.heat = clamp(r.heat + fx.heat.d, 0, 100); }
+  if(fx.posts) pushPosts(fx.posts.kind || "own", fx.posts.n || 2, null, true);
+}
+function renderModal(){
+  const host = $("#modal");
+  if(!S || !S.modal){ host.innerHTML = ""; return; }
+  const m = S.modal;
+  host.innerHTML = `<div class="scrim"><div class="dlg ${m.tone?("tone-"+m.tone):""}" role="dialog" aria-modal="true" aria-label="${esc(m.title)}">
+    <div class="dh"><p class="kicker">${esc(m.kicker||"")}</p><h3>${esc(m.title)}</h3></div>
+    <div class="db2">${m.body}</div>
+    <div class="df">${m.choices.map((c,i)=>`<button class="opt ${c.danger?"danger":""}" data-choice="${i}">
+      <b>${esc(c.label)}</b>${c.note?`<small>${esc(c.note)}</small>`:""}</button>`).join("")}</div>
+  </div></div>`;
+}
+
+/* ================= chrome ================= */
+const STEPS_FIRST = [
+  {id:"company", n:"설립"}, {id:"recruit", n:"모집"}, {id:"training", n:"트레이닝"},
+  {id:"debut", n:"데뷔조"}, {id:"produce", n:"제작"}, {id:"promo", n:"활동"}, {id:"results", n:"정산"},
+];
+const STEPS_LOOP = [
+  {id:"hub", n:"사무실"}, {id:"training", n:"트레이닝"}, {id:"produce", n:"제작"},
+  {id:"promo", n:"활동"}, {id:"results", n:"정산"},
+];
+const steps = () => ((S.cycle>1 || S.phase==="hub" || S.phase==="ending") ? STEPS_LOOP : STEPS_FIRST);
+/** 계약 잔여를 "3년 6개월" 꼴로. */
+function termLeft(){
+  const total=S.contractYears*12, left=Math.max(0,total-S.months);
+  return {left, y:Math.floor(left/12), m:left%12, elapsedY:Math.floor(S.months/12), elapsedM:S.months%12,
+          cyclesLeft: Math.floor(left/MONTHS_PER_CYCLE), expired: left<MONTHS_PER_CYCLE};
+}
+function chrome(inner, cta){
+  const ST = steps(), t = termLeft();
+  const idx = S.phase==="ending" ? ST.length : ST.findIndex(s=>s.id===S.phase);
+  const weekTxt =
+    S.phase==="training" ? `연습 ${S.trainWeek}/4주` :
+    S.phase==="promo"    ? `활동 ${S.promoWeek}/4주` :
+    S.phase==="results"  ? "정산" : S.phase==="hub" ? "공백기" : "—";
+  const stats = [
+    {k:"자금", v:wonShort(S.money), cls: S.money<0 ? "hot" : S.money<500000 ? "warn" : ""},
+    S.fan>0 ? {k:"팬덤", v:cnt(S.fan,"명"), cls:"hot"} : null,
+    S.group ? {k:"계약", v:`${t.y}년 ${t.m}개월`, cls: t.expired ? "warn" : ""} : null,
+    {k:"주차", v:weekTxt, cls:"", sm:true},
+  ].filter(Boolean);
+
+  return `
+  <header class="topbar">
+    <div class="brand">
+      <div class="mark">IA</div>
+      <div class="co">
+        <div class="co-n">${S.company.name ? esc(S.company.name) : "IDOL AGENCY"}</div>
+        <div class="co-s">${S.group ? esc(S.group.name)+" · "+S.cycle+"번째 컴백" : "SIMULATOR"}</div>
+      </div>
+    </div>
+    <div class="tstats">
+      ${stats.map(s=>`<div class="tstat${s.sm?" hide-sm":""}"><b class="${s.cls}">${s.v}</b><span>${s.k}</span></div>`).join("")}
+    </div>
+  </header>
+  <nav class="steps" aria-label="진행 단계">
+    ${ST.map((s,i)=>`<div class="step ${i<idx?"done":i===idx?"now":""}"><i>${i<idx?"✓":i+1}</i><span>${s.n}</span></div>`).join("")}
+  </nav>
+  <main>${inner}</main>
+  ${cta ? `<div class="cta">
+      <div class="txt"><b>${cta.title}</b><span>${cta.sub||""}</span></div>
+      ${cta.ghost?`<button class="btn ghost" data-act="${cta.ghost.act}">${cta.ghost.label}</button>`:""}
+      <button class="btn primary lg" data-act="${cta.act}" ${cta.disabled?"disabled":""}>${cta.label}</button>
+    </div>` : ""}`;
+}
+
+/* ================= render ================= */
+function render(){
+  const app = $("#app");
+  app.innerHTML = ({
+    intro:vIntro, company:vCompany, recruit:vRecruit, training:vTraining,
+    debut:vDebut, produce:vProduce, promo:vPromo, results:vResults,
+    hub:vHub, ending:vEnding,
+  })[S.phase]();
+  renderModal();
+  drawPhone();
+  const nav=$(".steps"), now=$(".step.now");
+  if(nav && now) nav.scrollLeft = Math.max(0, now.offsetLeft - 48);
+  window.scrollTo({top:0, behavior:"instant"});
+}
+function go(p){ S.phase=p; save(); render(); }
+
+/* ---------- intro ---------- */
+function vIntro(){
+  const has = !!loadSave();
+  return `<div class="intro">
+    <div class="glowbg"></div>
+    <div class="in">
+      <p class="kick">Idol Agency Simulator</p>
+      <h1>자본금 <em>500만원</em>,<br>기획사 하나</h1>
+      <div class="cine">
+        <p style="animation-delay:.15s">회의실 하나, 연습실 하나.</p>
+        <p style="animation-delay:.9s">직원은 당신뿐입니다.</p>
+        <p style="animation-delay:1.65s; color:var(--neon)">앞으로 7년, 이 아이들은 당신의 팀입니다.</p>
+      </div>
+      <p class="sub">연습생을 직접 뽑고, 연습 스케줄을 짜고, 데뷔조를 꾸리세요.<br>전속계약은 <b style="color:var(--paper)">7년</b>. 그 안에 몇 장을 낼 수 있는지가 전부입니다.</p>
+      <div class="acts">
+        <button class="btn primary lg" data-act="start">기획사 설립하기</button>
+        ${has?`<button class="btn lg" data-act="resume">이어하기</button>`:""}
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- 1. company ---------- */
+function vCompany(){
+  const c=S.company;
+  return chrome(`
+    <div class="hd"><div><p class="kicker">Step 1 · Found the label</p><h2>기획사 설립</h2></div><span class="line"></span>
+      <p class="hint">이름과 사무실만 정하면 됩니다. 나머지는 당신이 만들어 갑니다.</p></div>
+    <div class="cols">
+      <div class="card"><div class="b">
+        <label class="field"><span>Agency name · 기획사명</span>
+          <input class="inp" id="fName" maxlength="14" placeholder="예: 스타라인 엔터테인먼트" value="${esc(c.name)}"></label>
+        <label class="field"><span>CEO · 대표 이름</span>
+          <input class="inp" id="fCeo" maxlength="10" placeholder="예: 김서연" value="${esc(c.ceo)}"></label>
+        <div class="field"><span>Office · 사무실 위치</span>
+          <div class="chips" id="fDist">
+            ${Object.entries(DISTRICTS).map(([k,d])=>`<button class="chip ${c.district===k?"on":""}" data-dist="${k}">${d.label} · 월 ${wonShort(d.rent)}</button>`).join("")}
+          </div>
+        </div>
+        <p class="hintline" id="distNote">${DISTRICTS[c.district].note}</p>
+      </div></div>
+
+      <div class="card paper"><div class="h"><div><p class="kicker">Business license</p><h3>사업자 등록증</h3></div></div>
+        <div class="b" style="font-family:var(--mono); font-size:12.5px">
+          <div style="display:grid; grid-template-columns:64px 1fr; gap:8px 12px">
+            <span style="color:rgba(10,10,11,.5)">상호</span><b id="pvName">${esc(c.name)||"—"}</b>
+            <span style="color:rgba(10,10,11,.5)">대표자</span><b id="pvCeo">${esc(c.ceo)||"—"}</b>
+            <span style="color:rgba(10,10,11,.5)">소재지</span><b id="pvDist">${DISTRICTS[c.district].label}</b>
+            <span style="color:rgba(10,10,11,.5)">업태</span><b>서비스 · 연예매니지먼트</b>
+            <span style="color:rgba(10,10,11,.5)">자본금</span><b>₩5,000,000</b>
+          </div>
+          <div style="margin-top:16px; padding-top:12px; border-top:1px dashed var(--paper-line); font-size:11px; color:rgba(10,10,11,.5)">
+            위 사업자는 아이돌 매니지먼트업을 영위함을 증명합니다.
+          </div>
+        </div>
+      </div>
+    </div>`,
+    {title:"설립하고 연습생 모집으로", sub:"등록 즉시 연습생을 직접 뽑습니다", label:"설립 완료", act:"company:submit", disabled:!c.name || !c.ceo}
+  );
+}
+
+/* ---------- 2. recruit ---------- */
+const CONTRACT = 200000;
+let lastGender = "f", lastPos = "vocal", lastAge = 18;
+function vRecruit(){
+  const n=S.trainees.length;
+  const back = S.recruitReturn === "hub";
+  return chrome(`
+    <div class="hd"><div><p class="kicker">${back?"Agency · Sign more trainees":"Step 2 · Sign trainees"}</p><h2>연습생 모집</h2></div><span class="line"></span>
+      <p class="hint">계약금 ${wonShort(CONTRACT)}/명. ${back?"영입한 연습생은 사무실에서 데뷔조에 합류시킬 수 있습니다.":"최소 4명, 최대 9명까지 등록할 수 있습니다."}</p></div>
+    <div class="cols">
+      <div style="display:grid; gap:18px">
+        <div class="card"><div class="h"><div><p class="kicker">New contract</p><h3>연습생 등록</h3></div>
+          <span class="tag ${S.money<CONTRACT?"":"neon"}">계약금 ${won(CONTRACT)}</span></div>
+          <div class="b">
+            <div class="grid3">
+              <label class="field" style="margin:0"><span>Name · 이름</span>
+                <input class="inp" id="nName" maxlength="8" placeholder="예: 최유진"></label>
+              <label class="field" style="margin:0"><span>Gender · 성별</span>
+                <select class="inp" id="nGender"><option value="f"${lastGender==="f"?" selected":""}>여성</option><option value="m"${lastGender==="m"?" selected":""}>남성</option></select></label>
+              <label class="field" style="margin:0"><span>Age · 나이</span>
+                <input class="inp tabular" id="nAge" type="number" min="14" max="35" step="1" value="${lastAge}"></label>
+            </div>
+            <div class="field" style="margin:14px 0 0"><span>Position · 포지션</span>
+              <div class="chips" id="nPos">
+                ${Object.entries(POSITIONS).map(([k,p])=>`<button class="chip ${lastPos===k?"on":""}" data-pos="${k}">${p.label}</button>`).join("")}
+              </div>
+            </div>
+            <div style="margin-top:16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap">
+              <button class="btn primary" data-act="recruit:add" ${n>=9||S.money<CONTRACT?"disabled":""}>연습생 등록</button>
+              <span style="font-size:11.5px; color:var(--muted)">포지션에 따라 초기 능력치가 달라지고, 잠재력 등급은 무작위입니다.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card"><div class="h"><div><p class="kicker">Trainee roster</p><h3>연습생 명단</h3></div>
+          <span class="tag">${n} / 9</span></div>
+          <div class="b">
+            ${n ? `<div class="grid2">${S.trainees.map(tCard).join("")}</div>` :
+              `<p style="margin:0; color:var(--muted); font-size:13px; text-align:center; padding:24px 0">아직 아무도 없습니다. 위에서 첫 연습생을 등록하세요.</p>`}
+          </div>
+        </div>
+      </div>
+
+      <div class="card"><div class="h"><div><p class="kicker">Position guide</p><h3>포지션</h3></div></div>
+        <div class="b" style="display:grid; gap:11px">
+          ${Object.entries(POSITIONS).map(([k,p])=>`
+            <div style="display:grid; grid-template-columns:64px 1fr; gap:10px; font-size:12px; align-items:baseline">
+              <b style="font-size:12.5px">${p.label}</b>
+              <span style="color:var(--muted)">${Object.entries(p.bias).map(([s,v])=>`${STAT_LABELS[s]} +${v}`).join(" · ")}${p.note?` <span style="color:var(--neon)">· ${p.note}</span>`:""}</span>
+            </div>`).join("")}
+          <div style="border-top:1px solid var(--ink-line); padding-top:11px; margin-top:2px; font-size:11.5px; color:var(--muted)">
+            잠재력 등급(S~D)은 연습 성장률과 능력치 상한을 결정합니다. 돈으로 등급을 넘을 수는 없습니다.
+            <b style="color:var(--paper)">리더</b>가 데뷔조에 있으면 멘탈에 비례해 팀 효율이 최대 18%까지 올라갑니다.
+          </div>
+        </div>
+      </div>
+    </div>`,
+    {title: back ? "영입을 마치고 사무실로" : n<4 ? `연습생 ${4-n}명 더 필요합니다` : "트레이닝 4주 시작",
+     sub:   back ? "합류는 사무실 라인업에서" : n<4 ? "데뷔조를 짜려면 최소 4명" : `${n}명과 함께 연습을 시작합니다`,
+     label: back ? "사무실로 돌아가기" : "트레이닝 시작", act:"recruit:done", disabled: !back && n<4,
+     ghost: n ? {act:"recruit:undo", label:"마지막 취소"} : null}
+  );
+}
+function tCard(t, opt){
+  opt = opt || {};
+  const ov = overall(t);
+  return `<${opt.pick?"button":"div"} class="tcard ${opt.pick?"pick":""} ${opt.sel?"sel":""}" ${opt.pick?`data-pickid="${t.id}"`:""}>
+    <span class="av" style="background:${t.color}">${esc(t.name.slice(0,1))}</span>
+    <div class="tinfo">
+      <div class="tname">${esc(t.name)} <span class="tag ${["S","A"].includes(t.grade)?"neon":""}">${t.grade}</span></div>
+      <div class="tmeta">${t.age}세 · ${GENDERS[t.gender]} · ${POSITIONS[t.pos].label}${opt.fat!==false?` · 피로 ${Math.round(t.fat)}`:""}</div>
+      ${opt.stats!==false ? STAT_KEYS.map(k=>`
+        <div class="statrow"><span>${STAT_LABELS[k].slice(0,2)}</span>
+          <span class="bar ${t.stats[k]>=70?"":"calm"}"><i style="width:${t.stats[k]}%"></i></span>
+          <span class="n">${t.stats[k]}</span></div>`).join("") : ""}
+    </div>
+    <div class="tov"><span class="kicker">OVR</span><b>${ov}</b></div>
+  </${opt.pick?"button":"div"}>`;
+}
+
+/* ---------- 3. training ---------- */
+const TRAIN_COST = 150000, TRAIN_RECOVERY = 9;
+function vTraining(){
+  const plan=S.trainPlan, full=plan.length===3;
+  const proj = projectTraining(plan);
+  return chrome(`
+    <div class="hd"><div><p class="kicker">Training week ${S.trainWeek} of ${S.trainWeeks}${S.cycle>1?` · Cycle ${S.cycle}`:""}</p><h2>연습 스케줄</h2></div><span class="line"></span>
+      <p class="hint">주당 3타임. 피로가 쌓이면 성장률이 떨어집니다. 주 운영비 ${wonShort(TRAIN_COST)}.</p></div>
+    <div class="cols">
+      <div style="display:grid; gap:18px">
+        <div class="card"><div class="h"><div><p class="kicker">Week ${S.trainWeek} board</p><h3>이번 주 시간표</h3></div>
+          <span class="tag ${full?"neon":""}">${plan.length} / 3</span></div>
+          <div class="b">
+            <div class="slots">
+              ${[0,1,2].map(i=>{
+                const p=plan[i];
+                return p ? `<button class="slot full" data-clear="${i}">
+                    <span class="sl-n">Slot ${i+1}</span><span class="sl-t">${TRAIN[p].label}</span>
+                    <span class="sl-d">${TRAIN[p].desc}</span></button>`
+                  : `<div class="slot empty"><span>Slot ${i+1}<br>비어 있음</span></div>`;
+              }).join("")}
+            </div>
+          </div>
+        </div>
+
+        <div class="card"><div class="h"><div><p class="kicker">Programs</p><h3>연습 프로그램</h3></div></div>
+          <div class="b"><div class="palette">
+            ${Object.entries(TRAIN).map(([k,p])=>`
+              <button class="prog" data-prog="${k}" ${full?"disabled":""}>
+                <b>${p.label}</b><small>${p.desc}</small>
+                <span class="fx">
+                  ${Object.entries(p.gain).map(([s,v])=>`<span class="fxpill up">${STAT_LABELS[s]} +${v}</span>`).join("")}
+                  <span class="fxpill ${p.fat>0?"tire":""}">피로 ${p.fat>0?"+":""}${p.fat}</span>
+                </span>
+              </button>`).join("")}
+          </div></div>
+        </div>
+
+        ${S.trainLog.length?`<div class="card"><div class="h"><div><p class="kicker">Log</p><h3>지난 주 기록</h3></div></div>
+          <div class="b recap">${S.trainLog.slice(-3).reverse().map(l=>`
+            <div class="rline"><span class="d">${l.w}주</span><span>${esc(l.txt)}</span><span class="d">+${l.gain}</span></div>`).join("")}</div></div>`:""}
+      </div>
+
+      <div style="display:grid; gap:18px">
+        <div class="card"><div class="h"><div><p class="kicker">Projection</p><h3>예상 성장</h3></div></div>
+          <div class="b">
+            ${full ? `<div class="grid2" style="gap:9px">
+                ${STAT_KEYS.map(k=>`<div style="font-size:12px; display:flex; justify-content:space-between"><span style="color:var(--muted)">${STAT_LABELS[k]}</span><b class="tabular" style="color:${proj.gain[k]?"var(--neon)":"var(--dim)"}">+${proj.gain[k]||0}</b></div>`).join("")}
+              </div>
+              <div style="margin-top:12px; padding-top:11px; border-top:1px solid var(--ink-line); font-size:12px; display:flex; justify-content:space-between">
+                <span style="color:var(--muted)">평균 피로 변화</span><b class="tabular" style="color:${proj.fat>0?"#FFB020":"var(--neon)"}">${proj.fat>0?"+":""}${proj.fat}</b></div>
+              <p style="margin:10px 0 0; font-size:11.5px; color:var(--muted)">${proj.note}</p>`
+            : `<p style="margin:0; color:var(--muted); font-size:12.5px">3타임을 모두 채우면 예상 성장치가 표시됩니다.</p>`}
+          </div>
+        </div>
+        ${chatterPanel("Voices · 연습실에서", "멤버 한마디")}
+        <div class="card"><div class="h"><div><p class="kicker">Squad</p><h3>연습생 컨디션</h3></div></div>
+          <div class="b" style="display:grid; gap:9px">
+            ${S.trainees.map(t=>`
+              <div style="display:grid; grid-template-columns:1fr 62px 34px; gap:9px; align-items:center; font-size:12px">
+                <span style="display:flex; align-items:center; gap:7px; min-width:0">
+                  <span class="av" style="width:22px;height:22px;font-size:10px;background:${t.color}">${esc(t.name.slice(0,1))}</span>
+                  <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(t.name)}</span></span>
+                <span class="bar ${t.fat>60?"warn":"calm"}"><i style="width:${clamp(t.fat,0,100)}%"></i></span>
+                <b class="tabular" style="text-align:right; font-size:12px">${overall(t)}</b>
+              </div>`).join("")}
+          </div>
+        </div>
+      </div>
+    </div>`,
+    {title: full ? `${S.trainWeek}주차 연습 마치기` : `타임 ${3-plan.length}개가 비었습니다`,
+     sub:   full ? (S.trainWeek===S.trainWeeks ? (S.cycle>1?"연습이 끝나면 다음 앨범을 제작합니다":"연습이 끝나면 데뷔조를 짭니다") : "다음 주로 넘어갑니다") : "프로그램을 눌러 시간표를 채우세요",
+     label: S.trainWeek===S.trainWeeks ? "연습 종료" : `${S.trainWeek}주차 마치기`, act:"train:close", disabled:!full}
+  );
+}
+function projectTraining(plan){
+  const gain={}, avgFat = S.trainees.reduce((s,t)=>s+t.fat,0)/Math.max(1,S.trainees.length);
+  const eff = clamp(1 - avgFat/165, 0.45, 1);
+  let fat=0;
+  plan.forEach(k=>{
+    const p=TRAIN[k]; fat+=p.fat;
+    for(const s in p.gain) gain[s]=(gain[s]||0)+Math.round(p.gain[s]*eff);
+  });
+  const note = eff<0.7 ? "피로가 높아 성장률이 눌렸습니다. 휴식을 한 타임 넣으세요."
+             : eff<0.9 ? "컨디션은 무난합니다."
+             : "컨디션이 좋아 성장률이 온전히 반영됩니다.";
+  return {gain, fat:Math.round(fat/1.4), eff, note};
+}
+function closeTrainWeek(){
+  const plan=S.trainPlan, avgFat=S.trainees.reduce((s,t)=>s+t.fat,0)/Math.max(1,S.trainees.length);
+  const eff = clamp(1 - avgFat/165, 0.45, 1);
+  let total=0;
+  S.trainees.forEach(t=>{
+    plan.forEach(k=>{
+      const p=TRAIN[k];
+      for(const s in p.gain){
+        const room = Math.max(0, t.cap - t.stats[s]);
+        const g = Math.round(p.gain[s] * t.mult * eff * clamp(room/26, 0.12, 1));
+        t.stats[s] = clamp(t.stats[s]+g, 0, t.cap); total+=g;
+      }
+      t.fat = clamp(t.fat + p.fat/1.4, 0, 100);
+    });
+    t.fat = clamp(t.fat - TRAIN_RECOVERY, 0, 100);
+  });
+  S.chatter = makeChatter(plan, "train");
+  S.money -= TRAIN_COST; S.costs.train += TRAIN_COST;
+  S.trainLog.push({w:S.trainWeek, txt: plan.map(k=>TRAIN[k].label).join(" · "), gain: total});
+  S.trainPlan=[]; S.trainWeek++;
+  if(S.trainWeek > S.trainWeeks){
+    S.trainWeek = S.trainWeeks;
+    if(S.cycle>1){ startAlbum(); go("produce"); } else go("debut");
+  } else { save(); render(); }
+}
+
+/* ---------- 4. debut ---------- */
+const FAN_COLORS=["#FF1F3D","#FF7A00","#FFD400","#3DDC84","#00B8D9","#5B6CFF","#A855F7","#FF4FA3"];
+let debutDraft=null;
+function draft(){
+  if(!debutDraft) debutDraft={members:[], center:null, name:"", fandom:"", color:"#FF1F3D"};
+  return debutDraft;
+}
+function vDebut(){
+  const d=draft(), ok = d.members.length>=4 && d.name && d.fandom && d.center;
+  const sel = d.members.map(T).filter(Boolean);
+  const avg = sel.length ? STAT_KEYS.reduce((o,k)=>(o[k]=Math.round(sel.reduce((s,t)=>s+t.stats[k],0)/sel.length),o),{}) : null;
+  return chrome(`
+    <div class="hd"><div><p class="kicker">Step 4 · Form the debut lineup</p><h2>데뷔조 결성</h2></div><span class="line"></span>
+      <p class="hint">4~7명. 센터는 화면 장악력을, 팀 평균은 무대 완성도를 결정합니다.</p></div>
+    <div class="cols">
+      <div style="display:grid; gap:18px">
+        <div class="card"><div class="h"><div><p class="kicker">Pick members</p><h3>멤버 선발</h3></div>
+          <span class="tag ${d.members.length>=4?"neon":""}">${d.members.length} / 7</span></div>
+          <div class="b"><div class="grid2">
+            ${S.trainees.map(t=>tCard(t,{pick:true, sel:d.members.includes(t.id), stats:false, fat:false})).join("")}
+          </div>
+          <p style="margin:12px 0 0; font-size:11.5px; color:var(--muted)">선발되지 않은 연습생은 다음 기회를 기다립니다.</p>
+          </div>
+        </div>
+
+        ${sel.length?`<div class="card"><div class="h"><div><p class="kicker">Center</p><h3>센터 지정</h3></div></div>
+          <div class="b"><div class="chips">
+            ${sel.map(t=>`<button class="chip ${d.center===t.id?"on":""}" data-center="${t.id}">${esc(t.name)} · ${POSITIONS[t.pos].label}</button>`).join("")}
+          </div></div></div>`:""}
+      </div>
+
+      <div style="display:grid; gap:18px">
+        <div class="card"><div class="h"><div><p class="kicker">Identity</p><h3>그룹 정보</h3></div></div>
+          <div class="b">
+            <label class="field"><span>Group name · 그룹명</span>
+              <input class="inp" id="dName" maxlength="12" placeholder="예: 아이리스" value="${esc(d.name)}"></label>
+            <label class="field"><span>Fandom name · 팬덤명</span>
+              <input class="inp" id="dFandom" maxlength="12" placeholder="예: 아이리시" value="${esc(d.fandom)}"></label>
+            <div class="field" style="margin:0"><span>Fandom color · 팬덤 컬러</span>
+              <div class="chips">${FAN_COLORS.map(c=>`<button class="chip" data-color="${c}" aria-label="${c}" style="width:34px;height:30px;padding:0;background:${c};border-color:${d.color===c?"#fff":"transparent"};box-shadow:${d.color===c?"0 0 0 2px "+c:"none"}"></button>`).join("")}</div>
+            </div>
+          </div>
+        </div>
+        ${avg?`<div class="card"><div class="h"><div><p class="kicker">Team average</p><h3>팀 평균</h3></div>
+          <span class="tag neon">OVR ${Math.round(STAT_KEYS.reduce((s,k)=>s+avg[k],0)/6)}</span></div>
+          <div class="b" style="display:grid; gap:8px">
+            ${STAT_KEYS.map(k=>`<div style="display:grid; grid-template-columns:44px 1fr 28px; gap:9px; align-items:center; font-size:12px">
+              <span style="color:var(--muted)">${STAT_LABELS[k]}</span>
+              <span class="bar"><i style="width:${avg[k]}%"></i></span>
+              <b class="tabular" style="text-align:right">${avg[k]}</b></div>`).join("")}
+          </div></div>`:""}
+      </div>
+    </div>`,
+    {title: ok ? `${d.name} 데뷔 확정` : "그룹명 · 팬덤명 · 센터까지 정해야 합니다",
+     sub: ok ? "다음은 뮤직비디오와 음원 제작입니다" : `멤버 ${Math.max(0,4-d.members.length)}명 더 · 나머지 항목 입력`,
+     label:"데뷔 확정", act:"debut:confirm", disabled:!ok}
+  );
+}
+
+/* ---------- 5. produce ---------- */
+function vProduce(){
+  const a=S.album, AT = ALBUM_TYPES[a.type];
+  const cost = Math.round(PROD.reduce((s,p)=>s+TIERS.find(t=>t.id===a.tiers[p.id]).cost, 0) * AT.cost);
+  const q = albumQuality();
+  const ms = memberList(), spread = partSpread(), ps = partScore();
+  const named = a.tracks.every(t=>t && t.trim());
+  const afford = cost<=S.money;
+  const runCost = 4*(PROMO_COST + DISTRICTS[S.company.district].rent/4);
+  const after = S.money - cost;
+  return chrome(`
+    <div class="hd"><div><p class="kicker">Step 5 · Produce the debut single</p><h2>데뷔곡 제작</h2></div><span class="line"></span>
+      <p class="hint">앨범 구성 · 파트 분배 · 예산 등급을 정합니다. 이 세 가지가 초동과 음원 성적을 만듭니다.</p></div>
+    <div class="cols">
+      <div style="display:grid; gap:18px">
+        <div class="card"><div class="h"><div><p class="kicker">Track list</p><h3>앨범 구성</h3></div>
+          <button class="chip" data-act="album:auto">곡명 자동 생성</button></div>
+          <div class="b">
+            <div class="grid3" style="margin-bottom:16px">
+              ${Object.entries(ALBUM_TYPES).map(([k,t])=>`
+                <button class="prog" data-atype="${k}" style="${a.type===k?"border-color:var(--neon);background:rgba(255,31,61,.07)":""}">
+                  <b>${t.label}</b><small>${t.note}</small>
+                  <span class="fx"><span class="fxpill up">${t.tracks}곡</span><span class="fxpill">판매 ×${t.sales}</span><span class="fxpill">비용 ×${t.cost}</span></span>
+                </button>`).join("")}
+            </div>
+            <p class="kicker" style="margin-bottom:8px">Tracks · 수록곡 (라디오 버튼으로 타이틀곡 지정)</p>
+            <div style="display:grid; gap:8px">
+              ${a.tracks.map((t,i)=>`
+                <div style="display:grid; grid-template-columns:auto 26px minmax(0,1fr) auto; gap:9px; align-items:center">
+                  <button class="chip ${a.titleIdx===i?"on":""}" data-titleidx="${i}" style="padding:4px 9px; font-size:10.5px">${a.titleIdx===i?"타이틀":"수록"}</button>
+                  <span class="tabular" style="font-size:11px; color:var(--dim)">${String(i+1).padStart(2,"0")}</span>
+                  <input class="inp" data-track="${i}" maxlength="18" placeholder="곡명을 입력하세요" value="${esc(t)}"
+                         style="height:34px; ${a.titleIdx===i?"border-color:rgba(255,31,61,.5)":""}">
+                  ${a.titleIdx===i?'<span class="tag neon">TITLE</span>':'<span class="tag">B-SIDE</span>'}
+                </div>`).join("")}
+            </div>
+          </div>
+        </div>
+
+        <div class="card"><div class="h"><div><p class="kicker">Part distribution</p><h3>타이틀곡 파트 분배</h3></div>
+          <button class="chip" data-act="album:even">균등 분배</button></div>
+          <div class="b">
+            <div style="display:grid; gap:10px">
+              ${ms.map(m=>{const v=S.album.parts[m.id]||0; const fit=Math.round(m.stats.vocal*0.42+m.stats.rap*0.18+m.stats.charisma*0.22+m.stats.dance*0.18);
+                return `<div style="display:grid; grid-template-columns:minmax(0,132px) minmax(0,1fr) 44px; gap:10px; align-items:center">
+                  <span style="display:flex; align-items:center; gap:7px; min-width:0">
+                    <span class="av" style="width:24px;height:24px;font-size:10px;background:${m.color}">${esc(m.name.slice(0,1))}</span>
+                    <span style="min-width:0"><span style="display:block; font-size:12.5px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(m.name)}${S.group.center===m.id?" ★":""}</span>
+                    <span class="tabular" style="font-size:10px; color:var(--dim)">적합도 ${fit}</span></span></span>
+                  <input type="range" class="prange" data-part="${m.id}" min="0" max="100" step="1" value="${v}" aria-label="${esc(m.name)} 파트 비중">
+                  <b class="tabular" style="text-align:right; font-size:13px; color:${v>=100/ms.length+10?"var(--neon)":"var(--paper)"}">${v}%</b>
+                </div>`;}).join("")}
+            </div>
+            <div class="stackbar">${ms.map(m=>`<span style="width:${S.album.parts[m.id]||0}%; background:${m.color}" title="${esc(m.name)}"></span>`).join("")}</div>
+            <div style="display:flex; justify-content:space-between; margin-top:9px; font-size:11.5px">
+              <span style="color:var(--muted)">파트 적합도 <b class="tabular" style="color:var(--paper)">${ps}</b> · 편중도 <b class="tabular" style="color:${spread>35?"#FFB020":"var(--paper)"}">${spread}%</b></span>
+              <span class="tabular" style="color:var(--muted)">합계 100%</span>
+            </div>
+            <p style="margin:9px 0 0; font-size:11.5px; color:${spread>35?"#FFB020":"var(--muted)"}">
+              ${spread>35 ? "한쪽에 크게 쏠렸습니다. 화제성은 오르지만 멤버 사이가 상하고 팬덤 분열 위험이 커집니다."
+               : spread<15 ? "고르게 나눴습니다. 팀 사이가 좋아지고 분열 위험이 낮습니다."
+               : "무난한 분배입니다."}</p>
+          </div>
+        </div>
+        ${PROD.map(p=>`
+          <div class="card"><div class="h"><div><p class="kicker">${p.kicker}</p><h3>${p.label}</h3></div>
+            <span class="tag">${p.desc}</span></div>
+            <div class="b"><div class="grid3">
+              ${TIERS.map(t=>`<button class="prog" data-tier="${p.id}:${t.id}" style="${a.tiers[p.id]===t.id?"border-color:var(--neon);background:rgba(255,31,61,.07)":""}">
+                <b>${t.label}</b><small>${t.note}</small>
+                <span class="fx"><span class="fxpill up">완성도 ${t.q}</span><span class="fxpill">${wonShort(t.cost)}</span></span>
+              </button>`).join("")}
+            </div></div>
+          </div>`).join("")}
+      </div>
+
+      <div style="display:grid; gap:18px">
+        <div class="card"><div class="h"><div><p class="kicker">Completion</p><h3>앨범 완성도</h3></div>
+          <span class="tag neon tabular">${q.total}</span></div>
+          <div class="b" style="display:grid; gap:9px">
+            ${PROD.map(p=>{const t=TIERS.find(x=>x.id===a.tiers[p.id]);return `
+              <div style="display:grid; grid-template-columns:64px 1fr 26px; gap:9px; align-items:center; font-size:12px">
+                <span style="color:var(--muted)">${p.label}</span>
+                <span class="bar"><i style="width:${t.q}%"></i></span>
+                <b class="tabular" style="text-align:right">${t.q}</b></div>`;}).join("")}
+            <div style="border-top:1px solid var(--ink-line); margin-top:4px; padding-top:11px; font-size:12px; display:flex; justify-content:space-between">
+              <span style="color:var(--muted)">멤버 실력 보정</span><b class="tabular" style="color:var(--neon)">${q.skillBonus>=0?"+":""}${q.skillBonus}</b></div>
+            <div style="font-size:12px; display:flex; justify-content:space-between">
+              <span style="color:var(--muted)">파트 분배 보정</span><b class="tabular" style="color:${q.partBonus>=0?"var(--neon)":"#FFB020"}">${q.partBonus>=0?"+":""}${q.partBonus}</b></div>
+          </div>
+        </div>
+        <div class="card"><div class="h"><div><p class="kicker">Budget</p><h3>제작비</h3></div></div>
+          <div class="b">
+            <div class="mrow"><span class="l">제작비 합계</span><span class="v" style="color:${afford?"var(--paper)":"#FFB020"}">${won(cost)}</span></div>
+            <div class="mrow"><span class="l">현재 자금</span><span class="v">${won(S.money)}</span></div>
+            <div class="mrow total"><span class="l"><b>제작 후 잔액</b></span><span class="v" style="${afford?"":"color:#FFB020"}">${won(after)}</span></div>
+            <div class="mrow"><span class="l"><b>활동 4주 운영비</b>주 ${wonShort(PROMO_COST)} + 임대료</span><span class="v">${won(runCost)}</span></div>
+            ${afford?(after>=runCost
+              ? `<p style="margin:10px 0 0; font-size:11.5px; color:var(--muted)">활동비까지 감당됩니다. 정산은 4주 뒤 한 번에 들어옵니다.</p>`
+              : `<p style="margin:10px 0 0; font-size:11.5px; color:#FFB020">활동 중 잔액이 마이너스로 내려갑니다. 정산으로 회복되지만 위험한 베팅입니다.</p>`)
+              : `<p style="margin:10px 0 0; font-size:11.5px; color:#FFB020">자금이 부족합니다. 예산 등급을 낮추세요.</p>`}
+          </div>
+        </div>
+      </div>
+    </div>`,
+    {title: !named ? "곡명을 모두 입력하세요" : !afford ? "자금이 부족합니다" : `${AT.label} 「${a.tracks[a.titleIdx]}」 발매`,
+     sub: named && afford ? "활동이 시작되면 휴대폰으로 팬 반응이 실시간으로 올라옵니다" : `${AT.tracks}곡 전부 이름이 필요합니다`,
+     label:"제작 완료", act:"produce:done", disabled:!afford || !named}
+  );
+}
+function albumQuality(){
+  const a=S.album, g=groupAvg();
+  const base = PROD.reduce((s,p)=>s+TIERS.find(t=>t.id===a.tiers[p.id]).q, 0)/PROD.length;
+  const skillBonus = Math.round((g.overall - 45)/2.4);
+  const partBonus  = Math.round((partScore() - 52)/2.2) + (partSpread()>35 ? -4 : partSpread()<15 ? 2 : 0);
+  const per = {};
+  PROD.forEach(p=>{ per[p.axis] = TIERS.find(t=>t.id===a.tiers[p.id]).q; });
+  return {total: clamp(Math.round(base + skillBonus + partBonus), 5, 100), base:Math.round(base), skillBonus, partBonus, per};
+}
+
+/* ---------- 6. promo ---------- */
+const PROMO_COST = 150000, PROMO_RECOVERY = 11;
+function vPromo(){
+  const plan=S.promoPlan, full=plan.length===3;
+  const q=albumQuality();
+  return chrome(`
+    <div class="hd"><div><p class="kicker">Step 6 · Comeback week ${S.promoWeek} of 4</p><h2>${esc(S.album.title)} 활동</h2></div><span class="line"></span>
+      <p class="hint">주당 3스케줄. 오른쪽 아래 휴대폰에서 팬 반응이 실시간으로 올라옵니다.</p></div>
+
+    <div class="grid4" style="margin-bottom:18px">
+      <div class="metric"><p class="kicker">Fandom · 팬덤</p><div class="v hot">${cnt(S.fan,"명")}</div><div class="s">충성도 ${Math.round(S.loyal)}</div></div>
+      <div class="metric"><p class="kicker">Buzz · 화제성</p><div class="v">${Math.round(S.buzz)}</div><div class="s">숏폼·챌린지로 오릅니다</div></div>
+      <div class="metric"><p class="kicker">Awareness · 인지도</p><div class="v">${Math.round(S.aware)}<span style="font-size:13px;color:var(--dim)"> /100</span></div><div class="s">대중 인지도</div></div>
+      <div class="metric"><p class="kicker">Album sales · 누적</p><div class="v">${cnt(S.sales,"장")}</div><div class="s">완성도 ${q.total}</div></div>
+    </div>
+
+    <div class="cols">
+      <div style="display:grid; gap:18px">
+        <div class="card"><div class="h"><div><p class="kicker">Week ${S.promoWeek} schedule</p><h3>이번 주 스케줄</h3></div>
+          <span class="tag ${full?"neon":""}">${plan.length} / 3</span></div>
+          <div class="b"><div class="slots">
+            ${[0,1,2].map(i=>{const p=plan[i];
+              return p ? `<button class="slot full" data-clear="${i}"><span class="sl-n">Slot ${i+1}</span>
+                  <span class="sl-t">${ACTS[p].label}</span><span class="sl-d">${ACTS[p].desc}</span></button>`
+                : `<div class="slot empty"><span>Slot ${i+1}<br>비어 있음</span></div>`;}).join("")}
+          </div></div>
+        </div>
+
+        <div class="card"><div class="h"><div><p class="kicker">Activities</p><h3>스케줄 선택</h3></div></div>
+          <div class="b"><div class="palette">
+            ${Object.entries(ACTS).map(([k,a])=>{const lock=actLocked(k);return `
+              <button class="prog" data-actv="${k}" ${full||lock?"disabled":""}>
+                <b>${a.label}${lock?' <span class="tag">잠김</span>':""}</b><small>${lock||a.desc}</small>
+                <span class="fx">
+                  ${a.sales>=1?'<span class="fxpill up">판매↑</span>':""}
+                  ${a.stream>=1?'<span class="fxpill up">음원↑</span>':""}
+                  ${a.fan>=1?'<span class="fxpill up">팬덤↑</span>':""}
+                  ${a.aware>=1?'<span class="fxpill up">인지도↑</span>':""}
+                  ${a.money||a.ticket?'<span class="fxpill up">수익↑</span>':""}
+                  <span class="fxpill ${a.fat>0?"tire":""}">피로 ${a.fat>0?"+":""}${a.fat}</span>
+                </span>
+              </button>`;}).join("")}
+          </div></div>
+        </div>
+
+        ${S.logs.length?`<div class="card"><div class="h"><div><p class="kicker">Weekly log</p><h3>주차 기록</h3></div></div>
+          <div class="b recap">${S.logs.slice().reverse().map(l=>`
+            <div class="rline"><span class="d">${l.w}주</span>
+              <span>${esc(l.acts)} · 판매 +${cnt(l.sales,"장")} · 팬덤 +${cnt(l.fan,"명")}</span>
+              <span class="d">${cnt(l.fanAfter,"명")}</span></div>`).join("")}</div></div>`:""}
+      </div>
+
+      <div style="display:grid; gap:18px">
+        <div class="card"><div class="h"><div><p class="kicker">Members</p><h3>멤버 컨디션</h3></div></div>
+          <div class="b" style="display:grid; gap:9px">
+            ${memberList().map(t=>{const benched=t.fat>=85;return `
+              <div style="display:grid; grid-template-columns:1fr 62px 40px; gap:9px; align-items:center; font-size:12px">
+                <span style="display:flex; align-items:center; gap:7px; min-width:0">
+                  <span class="av" style="width:22px;height:22px;font-size:10px;background:${t.color}">${esc(t.name.slice(0,1))}</span>
+                  <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(t.name)}${S.group.center===t.id?" ★":""}</span></span>
+                <span class="bar ${t.fat>60?"warn":"calm"}"><i style="width:${clamp(t.fat,0,100)}%"></i></span>
+                <b style="text-align:right; font-size:10.5px; font-family:var(--mono); color:${benched?"#FFB020":"var(--dim)"}">${benched?"열외":Math.round(t.fat)}</b>
+              </div>`;}).join("")}
+            <p style="margin:2px 0 0; font-size:11px; color:var(--muted)">피로 85 이상이면 무대에서 빠집니다. 팀 효율이 떨어져요.</p>
+          </div>
+        </div>
+        ${chatterPanel("Voices · 대기실에서", "멤버 한마디")}
+        ${chartPanel()}
+        ${relPanel(true)}
+        <div class="card"><div class="h"><div><p class="kicker">Running cost</p><h3>이번 주 비용</h3></div></div>
+          <div class="b">
+            <div class="mrow"><span class="l">활동 운영비</span><span class="v">${wonShort(PROMO_COST)}</span></div>
+            <div class="mrow"><span class="l">사무실 임대료</span><span class="v">${wonShort(DISTRICTS[S.company.district].rent/4)}</span></div>
+            <div class="mrow total"><span class="l"><b>주차 합계</b></span><span class="v">${wonShort(PROMO_COST + DISTRICTS[S.company.district].rent/4)}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>`,
+    {title: full ? `${S.promoWeek}주차 스케줄 소화하기` : `스케줄 ${3-plan.length}개가 비었습니다`,
+     sub:   full ? (S.promoWeek===4?"4주차가 끝나면 정산합니다":"팬 반응이 실시간으로 올라옵니다") : "활동을 눌러 스케줄을 채우세요",
+     label: S.promoWeek===4 ? "활동 종료 · 정산" : `${S.promoWeek}주차 마치기`, act:"promo:close", disabled:!full}
+  );
+}
+
+function closePromoWeek(){
+  const plan=S.promoPlan, q=albumQuality(), g=groupAvg(), ms=memberList();
+  const active = ms.filter(t=>t.fat<85);
+  const leader = ms.find(t=>t.pos==="leader");
+  const leadBonus = leader ? 1 + clamp(leader.stats.mental/100, 0, 1)*0.18 : 1;   // 리더가 팀 효율을 붙잡습니다
+  const eff = clamp(active.length/Math.max(1,ms.length), 0.4, 1)
+            * clamp(1 - (ms.reduce((s,t)=>s+t.fat,0)/ms.length)/210, 0.5, 1) * leadBonus;
+  const skill = clamp(g.overall/55, 0.6, 1.7);
+
+  // Album sales are front-loaded: 초동 is the number the industry reads.
+  const WEEK_MULT = [2.4, 0.9, 0.6, 0.5][S.promoWeek-1];
+  const AT = ALBUM_TYPES[S.album.type] || ALBUM_TYPES.mini;
+  let sales=0, streams=0, fan=0, buzz=0, aware=0, cash=0;
+  plan.forEach(k=>{
+    const a=ACTS[k];
+    // Fandom→sales conversion saturates, or every cycle would triple the last one.
+    const convert     = S.fan * 0.22 / (1 + S.fan/40000);
+    const salesBase   = (1200 + convert) * (S.loyal/100) * (q.total/55) * WEEK_MULT;
+    const streamBase = 55000 + S.buzz*4500 + S.aware*9000;
+    sales   += a.sales  * salesBase  * eff * skill * AT.sales;
+    streams += a.stream * streamBase * eff * (0.55 + q.per.song/150) * AT.stream;
+    fan     += a.fan    * (300 + S.aware*45 + q.total*11) * eff * skill;
+    buzz    += a.buzz   * (4.2 + q.per.buzz/22) * eff;
+    // 대중 인지도는 올라갈수록 둔해집니다. 90은 몇 사이클을 들여야 닿는 선입니다.
+    aware   += a.aware  * (1.45 + q.per.mv/58) * eff * (1 - S.aware/128);
+    if(a.money) cash += a.money;
+    if(a.ticket) cash += Math.round(Math.min(S.fan*0.04, 5000) * 9000);
+    ms.forEach(t=> t.fat = clamp(t.fat + a.fat*0.66, 0, 100));
+  });
+  // 함께 붙어 있는 스케줄은 사이를 가깝게, 과로는 멀어지게 만듭니다.
+  const warmth = plan.reduce((n,k)=> n + (ACTS[k].fan>=0.9 ? 1 : 0), 0);
+  const strain = ms.reduce((n,t)=>n+t.fat,0)/Math.max(1,ms.length) > 70 ? -3 : 0;
+  S.rels.forEach(r=>{
+    r.aff  = clamp(r.aff + warmth*2 + strain + ri(-2,3), -100, 100);
+    r.heat = clamp(r.heat + (warmth?ri(1,5):ri(0,2)) + (plan.includes("own")?3:0), 0, 100);
+  });
+  const sp = partSpread();
+  if(sp > 35) S.rels.forEach(r=> r.aff = clamp(r.aff - 2, -100, 100));
+  else if(sp < 15) S.rels.forEach(r=> r.aff = clamp(r.aff + 1, -100, 100));
+  if(sp > 35) buzz += 1.6;                   // 몰아주면 화제는 됩니다
+  const feat = featuredChem();
+  if(feat){                                  // 밀어주는 조합이 화제를 만듭니다
+    feat.r.heat = clamp(feat.r.heat + 6, 0, 100);
+    feat.r.aff  = clamp(feat.r.aff + 2, -100, 100);
+    buzz += 2.6;
+    setTimeout(()=> pushPosts("ship", 1, null, true), 900);
+  }
+  if(S.promoWeek===1){ streams *= 1.5; fan *= 1.7; }
+  buzz = S.buzz*0.72 + buzz;  // buzz decays
+
+  ms.forEach(t=> t.fat = clamp(t.fat - PROMO_RECOVERY, 0, 100));
+  S.money += cash; S.extraIncome += cash;
+  S.sales += sales; S.streams += streams;
+  S.fan   += fan;   S.buzz = clamp(buzz,0,100);
+  S.aware = clamp(S.aware + aware, 0, 100);
+  S.loyal = clamp(S.loyal + (plan.filter(k=>ACTS[k].fan>=0.9).length*3) - 1.5, 20, 100);
+
+  const wcost = PROMO_COST + DISTRICTS[S.company.district].rent/4;
+  S.money -= wcost; S.costs.promo += PROMO_COST; S.costs.rent += DISTRICTS[S.company.district].rent/4;
+
+  S.chatter = makeChatter(plan, "promo");
+  const chart = weeklyChart();
+  S.chart = chart;
+  S.logs.push({w:S.promoWeek, acts:plan.map(k=>ACTS[k].label).join(" · "),
+    sales:Math.round(sales), fan:Math.round(fan), fanAfter:Math.round(S.fan), buzz:Math.round(S.buzz),
+    rank: chart.findIndex(r=>r.me)+1, cash});
+
+  // live fan reactions, staggered
+  plan.forEach((k,i)=> setTimeout(()=> pushPosts(k, k==="rest"?1:2, null, true), i*260));
+  if(S.promoWeek===1) setTimeout(()=> pushPosts("hype", 1, S.sales, true), 1400);
+
+  S.promoPlan=[]; S.promoWeek++;
+  const ev = rollEvent();
+  if(S.promoWeek>4){ S.promoWeek=4; S.settledCycle=null; settle(); S.phase="results"; }
+  if(ev){ ask(ev); } else { save(); render(); }
+}
+
+/* ---------- 7. results ---------- */
+/** Debut baseline, then +18% on volume / +15% on profit over the previous album. */
+const BASE_TARGET = {sales:22000, streams:3600000, fanGain:15000, profit:20000000};
+function targetsFor(last){
+  if(!last) return {...BASE_TARGET};
+  return {
+    sales:   Math.max(BASE_TARGET.sales,   last.sales   * 1.18),
+    streams: Math.max(BASE_TARGET.streams, last.streams * 1.18),
+    fanGain: Math.max(BASE_TARGET.fanGain, last.fanGain * 1.18),
+    profit:  Math.max(BASE_TARGET.profit,  last.profit  * 1.15),
+  };
+}
+const PRICE_ALBUM = 13000, MARGIN_ALBUM = 0.11;
+const WON_PER_STREAM = 3.6, MARGIN_STREAM = 0.30;
+function settle(){
+  const q = albumQuality(), g = groupAvg();
+  const grossAlbum  = S.sales * PRICE_ALBUM;
+  const grossStream = S.streams * WON_PER_STREAM;
+  const eventFee    = S.aware > 45 ? Math.round((S.aware-45) * 260000) : 0;
+  const gross = grossAlbum + grossStream + eventFee;
+
+  const settleAlbum  = grossAlbum  * MARGIN_ALBUM;
+  const settleStream = grossStream * MARGIN_STREAM;
+  const revenue = settleAlbum + settleStream + eventFee + S.extraIncome;
+
+  const spend = S.costs.contract + S.costs.train + S.costs.prod + S.costs.promo + S.costs.rent;
+  const profit = revenue - spend;
+
+  // composite score, expanded so the letters actually separate
+  const nz = (v,ref) => clamp(v/ref, 0, 1.6);
+  // The bar is relative: a debut is measured against the industry baseline, every
+  // album after that against the one before it. Otherwise a grown group scores S forever.
+  const prevAlbum = S.career.last;
+  const ref = targetsFor(prevAlbum);
+  const fanGain = Math.max(0, S.fan - S.fanAtCycleStart);
+  const raw = nz(S.sales, ref.sales)*0.30 + nz(S.streams, ref.streams)*0.22 + nz(fanGain, ref.fanGain)*0.20
+            + nz(S.aware, 70)*0.08 + nz(q.total, 82)*0.08 + nz(profit, ref.profit)*0.12;
+  let score = 50 + (raw - 0.60) * 55;
+  if(score > 88) score = 88 + (score-88)*0.5;
+  score = clamp(Math.round(score), 1, 100);
+
+  const grade = score>=92?"S" : score>=80?"A" : score>=66?"B" : score>=50?"C" : score>=34?"D" : "F";
+  const chartRank = S.streams > 2600000 ? Math.max(1, Math.round(100 - (S.streams-2600000)/95000)) : null;
+
+  const line =
+    grade==="S" ? "신인상은 이미 확정입니다. 다음 앨범부터가 진짜 승부입니다." :
+    grade==="A" ? "업계가 이름을 기억하기 시작했습니다. 잘 만든 데뷔입니다." :
+    grade==="B" ? "무난한 데뷔. 팬덤은 남았고, 다음이 있습니다." :
+    grade==="C" ? "적자는 면했습니다. 다만 아무도 아직 확신하지 못합니다." :
+    grade==="D" ? "숫자가 냉정합니다. 무엇이 부족했는지는 기록에 남아 있습니다." :
+                  "이번 앨범은 실패했습니다. 그래도 멤버들은 무대에 섰습니다.";
+
+  const best = memberList().slice().sort((a,b)=>overall(b)-overall(a))[0];
+  S.money += revenue;
+  const c = S.career;
+  c.last = {sales:S.sales, streams:S.streams, fanGain, profit};
+  c.cycles++; c.sales += S.sales; c.streams += S.streams; c.revenue += revenue; c.profit += profit;
+  c.peakFan = Math.max(c.peakFan, Math.round(S.fan));
+  const first = S.logs.length ? S.logs[0].sales : 0;
+  c.bestFirst = Math.max(c.bestFirst, Math.round(first));
+  if(score >= c.bestScore){ c.bestScore = score; c.bestGrade = grade; }
+  S.result = {
+    ref, fanGain, prev: prevAlbum,
+    grade, score, gross, grossAlbum, grossStream, eventFee,
+    revenue, settleAlbum, settleStream, spend, profit, chartRank, line, extra:S.extraIncome,
+    best: best ? best.name : "", q:q.total,
+    first: S.logs.length ? S.logs[0].sales : 0,
+  };
+  pushPosts("hype", 2, S.sales, true);
+  save();
+}
+function vResults(){
+  const r=S.result;
+  const maxFan = Math.max(...S.logs.map(l=>l.fanAfter), 1);
+  return chrome(`
+    <div class="hd"><div><p class="kicker">Settlement · Cycle ${S.cycle}</p><h2>${esc(S.album.title)} 정산</h2></div><span class="line"></span>
+      <p class="hint">${ALBUM_TYPES[S.album.type].label} · ${S.album.tracks.length}곡 · 4주간의 활동 결과입니다.</p></div>
+
+    <div class="card" style="margin-bottom:18px"><div class="b">
+      <div class="gradebox">
+        <div class="gradebig">${r.grade}</div>
+        <div style="min-width:0; flex:1">
+          <p class="kicker">Debut result · ${esc(S.group.name)}</p>
+          <h3 style="font-size:19px; margin:5px 0 6px">종합 점수 <span class="tabular" style="color:var(--neon)">${r.score}</span> / 100</h3>
+          <p style="margin:0; color:var(--muted); font-size:13px; max-width:52ch">${r.line}</p>
+        </div>
+      </div>
+    </div></div>
+
+    <div class="grid4" style="margin-bottom:18px">
+      <div class="metric"><p class="kicker">First week</p><div class="v hot">${cnt(r.first,"장")}</div><div class="s">초동 판매량</div></div>
+      <div class="metric"><p class="kicker">Total sales</p><div class="v">${cnt(S.sales,"장")}</div><div class="s">누적 앨범 판매</div></div>
+      <div class="metric"><p class="kicker">Streams</p><div class="v">${cnt(S.streams,"회")}</div><div class="s">${r.chartRank?`차트 최고 ${r.chartRank}위`:"차트 진입 실패"}</div></div>
+      <div class="metric"><p class="kicker">Fandom</p><div class="v">${cnt(S.fan,"명")}</div><div class="s">충성도 ${Math.round(S.loyal)}</div></div>
+    </div>
+
+    <div class="cols">
+      <div class="card"><div class="h"><div><p class="kicker">Revenue &amp; profit</p><h3>매출액과 순이익</h3></div>
+        <span class="tag neon">완성도 ${r.q}</span></div>
+        <div class="b money">
+          <div class="mrow"><span class="l"><b>앨범 매출액</b>${cnt(S.sales,"장")} × ${won(PRICE_ALBUM)}</span><span class="v">${won(r.grossAlbum)}</span></div>
+          <div class="mrow"><span class="l"><b>음원 매출액</b>${cnt(S.streams,"회")} × 회당 ₩${WON_PER_STREAM}</span><span class="v">${won(r.grossStream)}</span></div>
+          ${r.eventFee?`<div class="mrow"><span class="l"><b>행사·광고</b>인지도 ${Math.round(S.aware)} 기준</span><span class="v">${won(r.eventFee)}</span></div>`:""}
+          <div class="mrow" style="border-top:1px solid var(--ink-line); padding-top:12px"><span class="l"><b>총 매출액</b>유통 전 기준</span><span class="v">${won(r.gross)}</span></div>
+
+          ${r.extra?`<div class="mrow"><span class="l"><b>부가 수익</b>광고 · 콘서트 · 사건 정산</span><span class="v">${won(r.extra)}</span></div>`:""}
+          <div class="mrow"><span class="l"><b>기획사 정산액</b>앨범 ${Math.round(MARGIN_ALBUM*100)}% · 음원 ${Math.round(MARGIN_STREAM*100)}%${r.extra?" + 부가 수익":""}</span><span class="v">${won(r.revenue)}</span></div>
+          <div class="mrow cost"><span class="l"><b>총 비용</b>계약금 · 연습 · 제작 · 활동 · 임대료</span><span class="v">−${won(r.spend)}</span></div>
+          <div class="mrow total"><span class="l"><b>순이익</b>${r.profit>=0?"흑자":"적자"}</span><span class="v">${won(r.profit)}</span></div>
+        </div>
+      </div>
+
+      <div style="display:grid; gap:18px">
+        ${relPanel(true)}
+        <div class="card"><div class="h"><div><p class="kicker">Against the bar</p><h3>${r.prev?"지난 앨범 대비":"데뷔 기준선 대비"}</h3></div>
+          <span class="tag ${r.score>=66?"neon":""}">${r.prev?"목표 +18%":"신인 기준"}</span></div>
+          <div class="b" style="display:grid; gap:10px">
+            ${[["판매량", S.sales, r.ref.sales, "장"],["스트리밍", S.streams, r.ref.streams, "회"],
+               ["팬덤 증가", r.fanGain, r.ref.fanGain, "명"],["순이익", r.profit, r.ref.profit, "원"]]
+              .map(([l,v,t2,u])=>{
+                const pct = t2>0 ? clamp(v/t2, 0, 1.6) : 0;
+                return `<div>
+                  <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px">
+                    <span style="color:var(--muted)">${l}</span>
+                    <b class="tabular" style="color:${pct>=1?"var(--neon)":"var(--paper)"}">${Math.round(pct*100)}%</b></div>
+                  <span class="bar ${pct>=1?"":"calm"}"><i style="width:${Math.round(clamp(pct,0,1)*100)}%"></i></span>
+                  <div class="tabular" style="font-size:10.5px; color:var(--dim); margin-top:3px">
+                    ${u==="원"?wonShort(v):cnt(v,u)} / 목표 ${u==="원"?wonShort(t2):cnt(t2,u)}</div>
+                </div>`;}).join("")}
+            <p style="margin:2px 0 0; font-size:11.5px; color:var(--muted)">
+              ${r.prev ? "다음 앨범은 이번 성적보다 18% 위가 기준선이 됩니다." : "다음 앨범부터는 이번 성적이 기준선입니다."}</p>
+          </div>
+        </div>
+        <div class="card"><div class="h"><div><p class="kicker">Cost breakdown</p><h3>비용 내역</h3></div></div>
+          <div class="b" style="display:grid; gap:7px; font-size:12.5px">
+            ${[["연습생 계약금",S.costs.contract],["연습 운영비",S.costs.train],["앨범 제작비",S.costs.prod],["활동 운영비",S.costs.promo],["사무실 임대료",S.costs.rent]]
+              .map(([l,v])=>`<div style="display:flex; justify-content:space-between"><span style="color:var(--muted)">${l}</span><b class="tabular">${won(v)}</b></div>`).join("")}
+            <div style="border-top:1px solid var(--ink-line); margin-top:4px; padding-top:9px; display:flex; justify-content:space-between">
+              <span style="color:var(--muted)">현재 자금</span><b class="tabular" style="color:var(--neon)">${won(S.money)}</b></div>
+          </div>
+        </div>
+        <div class="card"><div class="h"><div><p class="kicker">Fandom by week</p><h3>주차별 팬덤</h3></div></div>
+          <div class="b"><div class="wchart">
+            ${S.logs.map(l=>`<div class="wcol"><div class="cb" style="height:${Math.round(l.fanAfter/maxFan*84)}px"></div><div class="cl">${l.w}주</div></div>`).join("")}
+          </div>
+          <p style="margin:10px 0 0; font-size:11.5px; color:var(--muted)">최고 ${cnt(maxFan,"명")} · ${esc(josa(r.best,"이가"))} 팀에서 가장 높은 평가를 받았습니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>`,
+    {title:`${S.cycle}번째 컴백 정산 완료`, sub:"기획사 사무실에서 다음 앨범을 준비합니다", label:"기획사 사무실로", act:"toHub"}
+  );
+}
+
+
+/* ---------- 8. agency hub — the loop-back point ---------- */
+const RENEW_PER_MEMBER = 3000000;
+
+/** Between cycles: 공백기 손실, 회복, 나이. Guarded so a refresh can't run it twice. */
+function enterHub(){
+  if(S.settledCycle === S.cycle) { go("hub"); return; }
+  S.settledCycle = S.cycle;
+  S.months += MONTHS_PER_CYCLE;
+  S.fan   = Math.round(S.fan * 0.88);          // 공백기 이탈
+  S.loyal = clamp(S.loyal - 4, 20, 100);
+  S.aware = clamp(S.aware * 0.88, 0, 100);
+  S.buzz  = 0;
+  S.trainees.forEach(t=>{ t.fat = 0; t.age += MONTHS_PER_CYCLE/12; });
+  pushPosts("hiatus", 3);
+  go("hub");
+}
+function startAlbum(){
+  S.album = {title:"", type:"mini", titleIdx:0, tracks:[], parts:{},
+             tiers:{record:"mid", mv:"mid", chore:"mid", promo:"mid"}};
+  setAlbumType("mini");
+  evenParts();
+}
+function setAlbumType(t){
+  S.album.type = t;
+  const n = ALBUM_TYPES[t].tracks, tr = S.album.tracks;
+  while(tr.length < n) tr.push("");
+  tr.length = n;
+  S.album.titleIdx = clamp(S.album.titleIdx, 0, n-1);
+  S.album.title = tr[S.album.titleIdx] || "";
+}
+/** Reset only what belongs to one album cycle. Everything else carries. */
+function nextCycle(){
+  S.cycle++; S.trainWeeks = 2; S.trainWeek = 1; S.trainPlan = []; S.trainLog = [];
+  S.promoWeek = 1; S.promoPlan = []; S.logs = []; S.sales = 0; S.streams = 0;
+  S.result = null; S.album = null;
+  S.costs = {contract:0, train:0, prod:0, promo:0, rent:0};
+  S.extraIncome = 0; S.seenEvents = []; S.chart = [];
+  go("training");
+}
+
+function vHub(){
+  const t = termLeft(), c = S.career, ms = memberList();
+  const bench = S.trainees.filter(x=>!S.group.members.includes(x.id));
+  const g = groupAvg();
+  return chrome(`
+    <div class="hd"><div><p class="kicker">Agency office · Cycle ${S.cycle} complete</p><h2>기획사 사무실</h2></div><span class="line"></span>
+      <p class="hint">활동과 활동 사이. 성과는 그대로 쌓이고, 계약 기간만 줄어듭니다.</p></div>
+
+    <div class="grid4" style="margin-bottom:18px">
+      <div class="metric"><p class="kicker">Contract · 계약</p><div class="v ${t.expired?"":"hot"}">${t.y}년 ${t.m}개월</div><div class="s">${S.contractYears}년 계약 중 ${t.elapsedY}년 ${t.elapsedM}개월 경과</div></div>
+      <div class="metric"><p class="kicker">Comebacks left</p><div class="v">${t.cyclesLeft}회</div><div class="s">남은 컴백 가능 횟수</div></div>
+      <div class="metric"><p class="kicker">Career sales</p><div class="v">${cnt(c.sales,"장")}</div><div class="s">${c.cycles}집까지 누적</div></div>
+      <div class="metric"><p class="kicker">Career profit</p><div class="v ${c.profit>=0?"hot":""}">${wonShort(c.profit)}</div><div class="s">누적 순이익</div></div>
+    </div>
+
+    ${t.expired ? `
+    <div class="card" style="margin-bottom:18px; border-color:rgba(255,31,61,.45)">
+      <div class="h"><div><p class="kicker">Contract expiring</p><h3>전속계약 만료</h3></div><span class="tag neon">잔여 ${t.left}개월</span></div>
+      <div class="b">
+        <p style="margin:0 0 14px; font-size:13px; color:var(--muted); max-width:60ch">
+          ${esc(josa(S.group.name,"과와"))} 맺은 ${S.contractYears}년이 끝나갑니다.
+          재계약하면 ${S.contractYears}년이 다시 주어지고, 멤버당 ${wonShort(RENEW_PER_MEMBER)}의 재계약금이 나갑니다.
+        </p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+          <button class="btn primary" data-act="hub:renew" ${S.money < ms.length*RENEW_PER_MEMBER ? "disabled":""}>재계약 · ${won(ms.length*RENEW_PER_MEMBER)}</button>
+          <button class="btn" data-act="hub:disband">계약 종료하고 마무리</button>
+          <span style="font-size:11.5px; color:var(--muted)">${S.money < ms.length*RENEW_PER_MEMBER ? "자금이 부족합니다." : "재계약금은 즉시 빠져나갑니다."}</span>
+        </div>
+      </div>
+    </div>` : ""}
+
+    <div class="cols">
+      <div style="display:grid; gap:18px">
+        <div class="card"><div class="h"><div><p class="kicker">Lineup</p><h3>데뷔조 라인업</h3></div>
+          <span class="tag ${ms.length>=4?"neon":""}">${ms.length} / 7</span></div>
+          <div class="b"><div class="grid2">
+            ${ms.map(x=>`<div class="tcard sel">
+              <span class="av" style="background:${x.color}">${esc(x.name.slice(0,1))}</span>
+              <div class="tinfo"><div class="tname">${esc(x.name)}${S.group.center===x.id?' <span class="tag neon">센터</span>':""}</div>
+                <div class="tmeta">${Math.floor(x.age)}세 · ${POSITIONS[x.pos].label} · OVR ${overall(x)}</div>
+                <div style="margin-top:7px; display:flex; gap:6px; flex-wrap:wrap">
+                  <button class="chip" data-center2="${x.id}" ${S.group.center===x.id?"disabled":""}>센터로</button>
+                  ${ms.length>4?`<button class="chip" data-leave="${x.id}">제외</button>`:""}
+                </div></div>
+            </div>`).join("")}
+          </div></div>
+        </div>
+
+        <div class="card"><div class="h"><div><p class="kicker">Industry</p><h3>같은 시기 활동 그룹</h3></div>
+          <span class="tag">${S.rivals.length}팀</span></div>
+          <div class="b" style="display:grid; gap:7px; font-size:12.5px">
+            ${S.rivals.map(r=>`<div style="display:flex; justify-content:space-between; align-items:center">
+              <span>${esc(r.name)}</span><span class="tag">${esc(r.tier)} 기획사</span></div>`).join("")}
+            <p style="margin:4px 0 0; font-size:11px; color:var(--muted)">컴백이 겹치거나 논란이 터지면 우리 성적에 영향을 줍니다.</p>
+          </div>
+        </div>
+
+        <div class="card"><div class="h"><div><p class="kicker">Reserve</p><h3>대기 연습생</h3></div>
+          <span class="tag">${bench.length}명</span></div>
+          <div class="b">
+            ${bench.length ? `<div class="grid2">${bench.map(x=>`<div class="tcard">
+                <span class="av" style="background:${x.color}">${esc(x.name.slice(0,1))}</span>
+                <div class="tinfo"><div class="tname">${esc(x.name)} <span class="tag">${x.grade}</span></div>
+                  <div class="tmeta">${Math.floor(x.age)}세 · ${POSITIONS[x.pos].label} · OVR ${overall(x)}</div>
+                  ${ms.length<7?`<div style="margin-top:7px"><button class="chip" data-join="${x.id}">데뷔조 합류</button></div>`:""}
+                </div></div>`).join("")}</div>`
+              : `<p style="margin:0; color:var(--muted); font-size:12.5px; text-align:center; padding:16px 0">대기 중인 연습생이 없습니다.</p>`}
+            <div style="margin-top:14px"><button class="btn" data-act="hub:recruit">연습생 영입 · ${wonShort(CONTRACT)}/명</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid; gap:18px">
+        ${relPanel(false)}
+        <div class="card"><div class="h"><div><p class="kicker">Career record</p><h3>누적 성과</h3></div></div>
+          <div class="b" style="display:grid; gap:8px; font-size:12.5px">
+            ${[["발매 앨범", c.cycles+"장"],["누적 판매", cnt(c.sales,"장")],["누적 스트리밍", cnt(c.streams,"회")],
+               ["최고 초동", cnt(c.bestFirst,"장")],["최고 등급", c.bestGrade+" · "+c.bestScore+"점"],
+               ["최고 팬덤", cnt(c.peakFan,"명")],["누적 정산액", won(c.revenue)]]
+              .map(([l,v])=>`<div style="display:flex; justify-content:space-between"><span style="color:var(--muted)">${l}</span><b class="tabular">${v}</b></div>`).join("")}
+            <div style="border-top:1px solid var(--ink-line); margin-top:4px; padding-top:9px; display:flex; justify-content:space-between">
+              <span style="color:var(--muted)">누적 순이익</span><b class="tabular" style="color:${c.profit>=0?"var(--neon)":"#FFB020"}">${won(c.profit)}</b></div>
+          </div>
+        </div>
+        <div class="card"><div class="h"><div><p class="kicker">Next target</p><h3>다음 앨범 기준선</h3></div>
+          <span class="tag neon">+18%</span></div>
+          <div class="b" style="display:grid; gap:8px; font-size:12.5px">
+            ${(()=>{const n=targetsFor(c.last);return [["판매량", cnt(n.sales,"장")],["스트리밍", cnt(n.streams,"회")],
+              ["팬덤 증가", cnt(n.fanGain,"명")],["순이익", won(n.profit)]]
+              .map(([l,v])=>`<div style="display:flex; justify-content:space-between"><span style="color:var(--muted)">${l}</span><b class="tabular">${v}</b></div>`).join("");})()}
+            <p style="margin:4px 0 0; font-size:11.5px; color:var(--muted)">등급은 이 선을 기준으로 매겨집니다. 그룹이 커질수록 기준도 같이 올라갑니다.</p>
+          </div>
+        </div>
+        <div class="card"><div class="h"><div><p class="kicker">Carry over</p><h3>다음 앨범으로 이어지는 것</h3></div></div>
+          <div class="b" style="display:grid; gap:8px; font-size:12.5px">
+            <div style="display:flex; justify-content:space-between"><span style="color:var(--muted)">팬덤 (공백기 −12%)</span><b class="tabular">${cnt(S.fan,"명")}</b></div>
+            <div style="display:flex; justify-content:space-between"><span style="color:var(--muted)">충성도</span><b class="tabular">${Math.round(S.loyal)}</b></div>
+            <div style="display:flex; justify-content:space-between"><span style="color:var(--muted)">대중 인지도</span><b class="tabular">${Math.round(S.aware)} / 100</b></div>
+            <div style="display:flex; justify-content:space-between"><span style="color:var(--muted)">팀 평균 OVR</span><b class="tabular">${g.overall}</b></div>
+            <div style="display:flex; justify-content:space-between"><span style="color:var(--muted)">피로도</span><b class="tabular">전원 회복 완료</b></div>
+            <p style="margin:6px 0 0; font-size:11.5px; color:var(--muted)">능력치와 팬덤은 초기화되지 않습니다. 화제성만 공백기에 사라집니다.</p>
+          </div>
+        </div>
+        <div class="card"><div class="h"><div><p class="kicker">Danger zone</p><h3>기록 삭제</h3></div></div>
+          <div class="b"><button class="btn ghost" data-act="reset">처음부터 다시 시작</button></div>
+        </div>
+      </div>
+    </div>`,
+    {title: t.expired ? "계약을 먼저 정리해야 합니다" : `${S.cycle+1}번째 앨범 준비 시작`,
+     sub: t.expired ? "재계약하거나 활동을 마무리하세요" : `연습 2주 → 제작 → 활동 4주 · 계약 ${MONTHS_PER_CYCLE}개월 소모`,
+     label:"다음 앨범 준비", act:"hub:next", disabled: t.expired}
+  );
+}
+
+/* ---------- ending ---------- */
+function vEnding(){
+  const c=S.career, t=termLeft();
+  const verdict = c.profit >= 100000000 ? "업계가 기억하는 이름을 만들었습니다."
+                : c.profit >= 20000000  ? "작지만 단단한 기획사로 남았습니다."
+                : c.profit >= 0         ? "적자는 면했습니다. 그것만으로도 드문 일입니다."
+                                        : "숫자는 실패했지만, 무대는 있었습니다.";
+  return chrome(`
+    <div class="hd"><div><p class="kicker">Career ending</p><h2>${esc(S.group.name)} 활동 종료</h2></div><span class="line"></span>
+      <p class="hint">${S.contractYears}년 계약이 끝났습니다.</p></div>
+    <div class="card" style="margin-bottom:18px"><div class="b">
+      <div class="gradebox">
+        <div class="gradebig">${c.bestGrade}</div>
+        <div style="min-width:0; flex:1">
+          <p class="kicker">Final record · ${esc(S.company.name)}</p>
+          <h3 style="font-size:19px; margin:5px 0 6px">${c.cycles}장의 앨범 · ${t.elapsedY}년 ${t.elapsedM}개월</h3>
+          <p style="margin:0; color:var(--muted); font-size:13px; max-width:52ch">${verdict}</p>
+        </div>
+      </div>
+    </div></div>
+    <div class="grid4" style="margin-bottom:18px">
+      <div class="metric"><p class="kicker">Albums</p><div class="v hot">${c.cycles}장</div><div class="s">발매 앨범</div></div>
+      <div class="metric"><p class="kicker">Total sales</p><div class="v">${cnt(c.sales,"장")}</div><div class="s">누적 판매량</div></div>
+      <div class="metric"><p class="kicker">Peak fandom</p><div class="v">${cnt(c.peakFan,"명")}</div><div class="s">최고 팬덤</div></div>
+      <div class="metric"><p class="kicker">Career profit</p><div class="v ${c.profit>=0?"hot":""}">${wonShort(c.profit)}</div><div class="s">누적 순이익</div></div>
+    </div>
+    <div class="card"><div class="h"><div><p class="kicker">Members</p><h3>마지막 라인업</h3></div></div>
+      <div class="b"><div class="grid2">${memberList().map(x=>tCard(x,{stats:false, fat:false})).join("")}</div></div>
+    </div>`,
+    {title:"수고했습니다", sub:"새 기획사로 다시 시작할 수 있습니다", label:"새 기획사 시작", act:"reset"}
+  );
+}
+
+
+
+/** 관계 패널 — 팬덤 최애 케미를 맨 위에, 그 아래 전체 쌍. */
+function relPanel(compact){
+  if(!S.rels.length) return "";
+  const feat = featuredChem(), hot = hottestChem();
+  const rows = S.rels.map(r=>{
+    const A=T(r.a), B=T(r.b); if(!A||!B) return null;
+    return {r, A, B, ship:shipName(A.name,B.name)};
+  }).filter(Boolean).sort((x,y)=>y.r.aff-x.r.aff);
+  const show = compact ? rows.slice(0,4) : rows;
+  return `<div class="card"><div class="h"><div><p class="kicker">Chemistry</p><h3>멤버 관계</h3></div>
+      <span class="tag neon">${S.rels.length}쌍</span></div>
+    <div class="b">
+      ${feat ? `<div class="ship">
+        <p class="kicker">팬덤 최애 케미 · 밀어주는 중</p>
+        <div class="ship-row">
+          <span class="av" style="width:30px;height:30px;font-size:12px;background:${feat.A.color}">${esc(feat.A.name.slice(0,1))}</span>
+          <span class="av" style="width:30px;height:30px;font-size:12px;background:${feat.B.color};margin-left:-9px">${esc(feat.B.name.slice(0,1))}</span>
+          <div style="min-width:0;flex:1">
+            <div class="ship-n">${esc(feat.ship)} <span class="tag neon">${relLabel(feat.r.type)}</span></div>
+            <div class="ship-s">${esc(feat.A.name)} × ${esc(feat.B.name)} · 호감도 ${feat.r.aff} · 화제성 ${feat.r.heat}</div>
+          </div>
+          <button class="chip" data-push="">해제</button>
+        </div>
+        <p class="ship-o">${esc(feat.r.origin)}</p>
+        <p class="ship-o" style="color:var(--neon)">매주 화제성 +6 · 팬 반응에 ${esc(feat.ship)} 언급이 늘어납니다.</p>
+      </div>` : `<div class="ship" style="border-style:dashed; border-color:var(--ink-line); background:transparent">
+        <p class="kicker">팬덤 최애 케미 · 미지정</p>
+        <p class="ship-o" style="margin-top:7px">밀어줄 조합을 아직 고르지 않았습니다. 아래에서 하나를 지정하면
+          자체 콘텐츠와 팬 반응이 그 조합을 중심으로 굴러갑니다.${hot?` 지금 자연스럽게 화제인 건 <b style="color:var(--paper)">${esc(hot.ship)}</b>입니다.`:""}</p>
+      </div>`}
+      <div style="display:grid; gap:7px; margin-top:12px">
+        ${show.map(x=>`<div style="display:grid; grid-template-columns:minmax(0,1fr) 52px auto; gap:8px; align-items:center; font-size:12px">
+          <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+            <b style="font-weight:600">${esc(x.ship)}</b>
+            <span style="color:var(--dim)"> ${esc(x.A.name)}·${esc(x.B.name)} · ${relLabel(x.r.type)} · ${x.r.aff}</span></span>
+          <span class="bar ${x.r.aff>=50?"":x.r.aff<0?"warn":"calm"}"><i style="width:${Math.round((clamp(x.r.aff,-100,100)+100)/2)}%"></i></span>
+          <button class="chip ${S.pushShip===x.r.k?"on":""}" data-push="${x.r.k}" style="padding:3px 8px; font-size:10.5px">${S.pushShip===x.r.k?"미는 중":"밀기"}</button>
+        </div>`).join("")}
+        ${compact && rows.length>4 ? `<p style="margin:2px 0 0; font-size:11px; color:var(--muted)">사무실에서 전체 ${rows.length}쌍을 볼 수 있습니다.</p>`:""}
+      </div>
+      <p style="margin:10px 0 0; font-size:11px; color:var(--muted)">호감도 72 이상 또는 −45 이하가 되면 멤버가 직접 면담을 신청합니다.</p>
+    </div></div>`;
+}
+
+/** 이번 주 음원 차트 — 라이벌과 나란히. */
+function chartPanel(){
+  if(!S.chart || !S.chart.length) return "";
+  return `<div class="card"><div class="h"><div><p class="kicker">Chart</p><h3>이번 주 음원 순위</h3></div></div>
+    <div class="b" style="display:grid; gap:7px">
+      ${S.chart.map((r,i)=>`<div style="display:grid; grid-template-columns:24px 1fr auto; gap:10px; align-items:center; font-size:12.5px;${r.me?"color:var(--neon);font-weight:600":""}">
+        <b class="tabular" style="color:${r.me?"var(--neon)":"var(--dim)"}">${i+1}</b>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.name)}</span>
+        <span class="tag ${r.me?"neon":""}">${esc(r.tier)}</span>
+      </div>`).join("")}
+    </div></div>`;
+}
+
+
+/* ================= member voices ================= */
+/** 멤버가 이번 주에 남긴 말. 스케줄·컨디션·관계에서 뽑습니다. */
+const SAY = {
+  vocalL :["고음 구간 드디어 안 갈라졌어요.","선생님이 오늘 처음으로 칭찬해주셨어요.","목이 좀 잠겼는데 내일이면 괜찮을 거예요.","녹음 부스에서 혼자 스무 번은 부른 것 같아요."],
+  danceL :["동선 마지막 8박이 아직 안 맞아요.","거울 안 보고도 출 수 있을 때까지 할게요.","무릎이 좀 아픈데 티 안 나게 할게요.","오늘 처음으로 다 같이 칼같이 맞았어요."],
+  rapL   :["플로우를 세 번 갈아엎었어요.","제 파트 가사는 제가 써봐도 될까요?","딕션 지적 받아서 밤에 더 연습했어요."],
+  camera :["카메라 앞에서 웃는 게 제일 어려워요.","제 각도를 이제 좀 알 것 같아요.","모니터로 보니까 제 표정이 낯설어요."],
+  mental :["상담받고 나니까 좀 가벼워졌어요.","요즘 잠을 못 잤는데 말하니까 낫네요.","괜찮아요. 진짜로 괜찮아요."],
+  monitor:["제 무대 다시 보는 게 제일 부끄러워요.","우리 이 부분만 고치면 진짜 좋아질 것 같아요.","형광펜으로 다 체크해왔어요."],
+  rest   :["오늘은 정말 아무것도 안 했어요.","열두 시간 잤어요. 살 것 같아요.","쉬는 것도 연습이라는 말 이제 알겠어요."],
+  music  :["무대 올라가기 직전이 제일 떨려요.","오늘 카메라 잡혔을 때 손 흔든 거 보셨어요?","생방이라 실수하면 어쩌나 했는데 잘 넘겼어요.","무대 내려오는데 다리가 풀렸어요."],
+  variety:["예능은 무대보다 열 배 어려워요.","제 분량 나올까요? 계속 신경 쓰여요.","웃기려고 한 건데 아무도 안 웃었어요."],
+  fansign:["오늘 팬분이 손편지 주셔서 울 뻔했어요.","이름 다 외우고 싶은데 잘 안 돼요.","두 시간 내내 웃었더니 볼이 아파요."],
+  short  :["이 안무 챌린지 백 번은 찍은 것 같아요.","알고리즘에 뜨는 거 보고 소리 질렀어요.","짧은데 왜 이렇게 어렵죠?"],
+  own    :["자컨 찍을 때가 제일 편해요.","카메라 없는 것처럼 떠들었는데 다 찍혔대요.","우리끼리 있을 때가 제일 웃겨요."],
+  radio  :["라디오는 목소리만 나가니까 좀 낫네요.","DJ분이 편하게 해주셔서 좋았어요."],
+  concert:["우리 이름 부르는 소리가 그렇게 클 줄 몰랐어요.","앵콜 때 울어서 가사를 못 불렀어요.","무대 끝나고 한참 못 내려왔어요."],
+  cf     :["광고 찍는데 같은 컷을 마흔 번 찍었어요.","TV에 제가 나온다는 게 아직 안 믿겨요."],
+  itv    :["질문이 어려워서 진심으로 답했어요.","인터뷰 나가면 꼭 챙겨보세요."],
+  yearend:["연말 무대 대기실에서 다 아는 얼굴이었어요.","이런 무대에 우리가 선다는 게…"],
+};
+const SAY_STATE = {
+  tired  :["솔직히 오늘은 몸이 안 따라줬어요.","조금만 자도 되니까 스케줄은 다 할게요.","괜찮다고 했는데 대표님은 아셨죠?","거울 보다가 제 얼굴에 놀랐어요.","링거 한 번만 맞고 오면 안 될까요?","목소리가 안 나와서 립싱크 걱정돼요.","대기실에서 십 분 잤는데 그게 그렇게 달더라고요.","안 힘들다고 하면 거짓말이겠죠."],
+  fresh  :["컨디션 좋아요. 더 해도 돼요.","오늘 몸이 가벼워서 다 잘됐어요.","푹 자고 나니까 세상이 달라 보여요.","오늘 같으면 두 탕도 뛰겠어요."],
+  center :["센터라는 게 이렇게 무거운 자리인 줄 몰랐어요.","제가 흔들리면 다 흔들리니까 더 연습해요.","가운데 서면 시야가 아예 달라요.","제 뒤에 네 명이 있다는 게 계속 생각나요."],
+  leader :["애들 컨디션은 제가 계속 보고 있을게요.","제가 맏이니까 제가 참으면 되죠.","막내가 요즘 말수가 줄었어요. 신경 쓰여요.","제 걱정은 나중에 하셔도 돼요."],
+  bigPart:["파트를 이만큼 받아도 되나 싶어요.","제 파트가 많아진 만큼 더 잘할게요.","분량 얘기 나올까 봐 조금 무서워요.","받은 만큼 책임진다는 마음으로 할게요."],
+  noPart :["제 파트가 두 소절인 건 좀 아쉬워요.","다음엔 조금만 더 주시면 안 될까요?","무대에서 제가 어디 있는지 모르겠어요.","연습은 다 했는데 부를 데가 없네요."],
+};
+function makeChatter(plan, kind){
+  const ms = kind==="train" ? S.trainees : memberList();
+  if(!ms.length) return [];
+  const pool = ms.slice();
+  const out = [], used = new Set();
+  const n = Math.min(3, pool.length);
+  const fresh = (arr) => {            // 이번 주에 아직 안 나온 문장을 우선합니다
+    const free = arr.filter(x=>!used.has(x));
+    return pick(free.length ? free : arr);
+  };
+  for(let i=0;i<n;i++){
+    const m = pool.splice(Math.floor(rnd()*pool.length),1)[0];
+    let text = null;
+    // 상황이 먼저, 스케줄이 그다음.
+    if(m.fat >= 78) text = fresh(SAY_STATE.tired);
+    else if(kind!=="train" && S.group && S.group.center===m.id && rnd()<0.3) text = fresh(SAY_STATE.center);
+    else if(m.pos==="leader" && rnd()<0.28) text = fresh(SAY_STATE.leader);
+    else if(kind!=="train" && S.album && S.album.parts){
+      const share = S.album.parts[m.id]||0, even = 100/Math.max(1,memberList().length);
+      if(share >= even+12 && rnd()<0.35) text = fresh(SAY_STATE.bigPart);
+      else if(share <= even-12 && rnd()<0.45) text = fresh(SAY_STATE.noPart);
+    }
+    if(!text && m.fat <= 18 && rnd()<0.3) text = fresh(SAY_STATE.fresh);
+    if(!text){
+      const k = pick(plan.filter(x=>SAY[x])) || pick(Object.keys(SAY));
+      text = fresh(SAY[k] || SAY.own);
+    }
+    // 관계가 뚜렷하면 상대를 언급합니다.
+    if(rnd() < 0.32 && S.rels.length){
+      const mine = S.rels.filter(r=> r.a===m.id || r.b===m.id);
+      if(mine.length){
+        const r = mine.slice().sort((x,y)=>Math.abs(y.aff)-Math.abs(x.aff))[0];
+        const other = T(r.a===m.id ? r.b : r.a);
+        if(other){
+          text = r.aff >= 55 ? pick([`${other.name}${josa(other.name,"과와").slice(-1)} 같이 하면 확실히 덜 힘들어요.`,
+                                     `요즘 ${josa(other.name,"이가")} 저를 제일 많이 챙겨줘요.`,
+                                     `${other.name} 없었으면 못 버텼을 거예요.`])
+               : r.aff <= -40 ? pick([`${other.name}${josa(other.name,"과와").slice(-1)} 파트 맞추는 게 아직 어색해요.`,
+                                      `${other.name} 얘기는… 지금은 안 할래요.`,
+                                      `무대에서는 티 안 내려고 노력하고 있어요.`])
+               : text;
+        }
+      }
+    }
+    used.add(text);
+    out.push({id:m.id, name:m.name, color:m.color, text});
+  }
+  return out;
+}
+function chatterPanel(kicker, title){
+  if(!S.chatter || !S.chatter.length) return "";
+  return `<div class="card"><div class="h"><div><p class="kicker">${kicker}</p><h3>${title}</h3></div></div>
+    <div class="b" style="display:grid; gap:11px">
+      ${S.chatter.map(c=>`<div class="say">
+        <span class="av" style="width:26px;height:26px;font-size:10px;background:${c.color}">${esc(c.name.slice(0,1))}</span>
+        <div><div class="say-n">${esc(c.name)}</div><p class="say-t">"${esc(c.text)}"</p></div>
+      </div>`).join("")}
+    </div></div>`;
+}
+
+/* ================= incidents ================= */
+const one = () => pick(memberList());
+const v = (pos, neg) => ({pos, neg});
+const anyRival = () => S.rivals.length ? pick(S.rivals) : {name:"타 그룹", tier:"중견"};
+
+/** 호감도가 임계를 넘으면 멤버가 직접 상담을 신청합니다. 쌍마다 한 번씩. */
+function counselEvent(){
+  const hot  = S.rels.filter(r=>r.aff >= 72 && !r.flags.close);
+  const cold = S.rels.filter(r=>r.aff <= -45 && !r.flags.cold);
+  const r = hot[0] || cold[0]; if(!r) return null;
+  const A = T(r.a), B = T(r.b); if(!A || !B) return null;
+  const warm = r.aff >= 72;
+  r.flags[warm ? "close" : "cold"] = true;
+  const ship = shipName(A.name, B.name);
+
+  return warm ? {
+    kind:"event", tone:"good", kicker:"Counselling request · 고민 상담",
+    title:`${A.name} 님이 면담을 신청했습니다`,
+    body:`대표님, 잠깐 시간 되세요? <b>${esc(B.name)}</b> 얘긴데요…<br><br>
+      요즘 둘이 붙어 다니는 게 팬들 눈에도 보이나 봐요. <b>${esc(ship)}</b>라고 부르더라고요.
+      저는 좋은데, 이게 팀에 방해가 되는 건 아닐까 싶어서요. 선을 그어야 할까요?`,
+    choices:[
+      {label:"자연스러운 게 제일 좋다", note:"케미를 그대로 두고 콘텐츠로 살립니다",
+       fx:{heat:{k:r.k, d:16}, rel:{k:r.k, d:6}, buzz:5, loyal:2},
+       result:`두 사람의 호흡은 그대로 남았습니다. <b>${esc(ship)}</b> 조합이 자체 콘텐츠에서 자주 잡히기 시작했고, 팬덤이 먼저 이름을 붙였습니다.`, voice:v([`${ship} 콘텐츠 더 주세요 제발`, `둘이 같이 있는 것만 봐도 힐링`], [`특정 조합만 미는 거 좀 불편한데`, `다른 멤버 분량은 언제 챙겨주나요`])},
+      {label:"팀 전체가 고르게 보이도록", note:"특정 조합에 쏠리지 않게 조정합니다",
+       fx:{heat:{k:r.k, d:-10}, relAll:4, loyal:3},
+       result:`특정 조합에 쏠리던 분량이 고르게 퍼졌습니다. 화제성은 조금 줄었지만 팀 전체의 사이가 나아졌습니다.`, voice:v([`전체 골고루 나와서 보기 좋다`, `이게 맞는 방향이지 팀이잖아`], [`${ship} 왜 안 붙여줌 아쉽다`, `살아있는 케미를 굳이 죽이네`])},
+      {label:"사적인 건 알아서 하되 조심하라", note:"거리를 두게 합니다", danger:true,
+       fx:{rel:{k:r.k, d:-14}, heat:{k:r.k, d:-6}},
+       result:`${esc(josa(A.name,"은는"))} 알겠다고만 하고 나갔습니다. 그날 이후 두 사람이 함께 있는 시간이 눈에 띄게 줄었습니다.`, voice:v([`사생활은 사생활이지 프로답게 가자`, `선 긋는 것도 회사 역할이긴 함`], [`둘이 어색해진 게 화면에 티남`, `회사가 뭐라고 한 거 아님?`])},
+    ]} : {
+    kind:"event", tone:"bad", kicker:"Counselling request · 고민 상담",
+    title:`${A.name} 님이 면담을 신청했습니다`,
+    body:`대표님, 저 <b>${esc(B.name)}</b>랑 같은 스케줄은 좀 빼주시면 안 될까요.<br><br>
+      싸운 건 아닌데요, 그냥… 요즘 같이 있으면 숨이 막혀요.
+      무대에서는 티 안 내려고 하는데 그것도 한계가 있어서요.`,
+    choices:[
+      {label:"둘이 마주 앉게 자리를 만든다", note:"위험하지만 근본을 건드립니다",
+       fx:{rel:{k:r.k, d:26}, fat:6},
+       result:`두 시간 동안 회의실 문이 닫혀 있었습니다. 나올 때 둘 다 눈이 붉었지만, 다음 날 연습실 분위기는 확실히 달라졌습니다.`, voice:v([`요즘 둘이 다시 붙어 다니더라 다행`, `화해한 것 같아서 마음 놓임`], [`억지로 붙여놓은 느낌이라 불안`, `무대에서 아직 어색한 거 보임`])},
+      {label:"당분간 스케줄을 분리한다", note:"안전하지만 미뤄집니다",
+       fx:{rel:{k:r.k, d:6}, fat:-6, buzz:-3},
+       result:`부딪힐 일이 줄어 당장은 조용해졌습니다. 다만 해결된 것은 아무것도 없습니다.`, voice:v([`각자 시간 필요할 때도 있지`, `일단 편해 보여서 다행이다`], [`둘이 같이 있는 장면이 아예 없어`, `뭔가 이상한데 아무도 말을 안 하네`])},
+      {label:"프로답게 하라고 말한다", note:"팀 전체 사기가 내려갑니다", danger:true,
+       fx:{rel:{k:r.k, d:-12}, relAll:-4, loyal:-3},
+       result:`${esc(josa(A.name,"은는"))} 더 말하지 않았습니다. 그 뒤로 면담을 신청하는 멤버가 없어졌습니다.`, voice:v([`프로면 그 정도는 감수해야지`, `무대에서는 티 하나도 안 나던데`], [`멤버 얘기 좀 들어주면 안 되나요`, `이 회사 사람 관리 진짜 별로다`])},
+    ]};
+}
+
+const DECK = [
+  { id:"dating", w:14, when:()=> S.aware>=22,
+    build(){ const m=one(), r=anyRival();
+      return {kind:"event", tone:"bad", kicker:"Breaking · 열애설",
+        title:`${m.name} 열애설 보도`,
+        body:`연예 매체가 <b>${esc(m.name)}</b>${josa(m.name,"과와").slice(-1)} <b>${esc(r.name)}</b> 멤버의 열애설을 단독으로 냈습니다.
+          사진 두 장이 전부지만, 실시간 검색어는 이미 올라갔습니다.<br><br>몇 시간 안에 입장을 내야 합니다.`,
+        choices:[
+          {label:"사실무근, 강경 대응", note:"부인하고 법적 대응을 예고합니다",
+           fx:{buzz:12, loyal:4, aware:5, fanPct:-0.02},
+           result:`강경한 입장문이 나갔습니다. 팬덤은 결집했지만, 일부 매체는 여전히 물음표를 남겼습니다.`, voice:v([`대응 빠른 거 보기 좋다 이런 게 신뢰`, `사실무근이면 이렇게 나가는 게 맞지`], [`부인부터 하는 거 좀 성급한 거 아님`, `나중에 사실로 밝혀지면 어쩌려고`])},
+          {label:"교제 인정하고 응원 요청", note:"솔직하지만 일부는 떠납니다",
+           fx:{buzz:20, aware:8, fanPct:-0.09, loyal:-6},
+           result:`인정하는 편이 낫다고 판단했습니다. 화제성은 크게 뛰었고, 팬덤 일부는 조용히 떠났습니다.`, voice:v([`솔직하게 말해줘서 오히려 고맙다`, `연애가 죄는 아니잖아 잘됐으면 함`], [`팬 앞에서 이럴 줄은 몰랐다 정떨어짐`, `포카 다 정리하러 갑니다`])},
+          {label:"무대응", note:"저절로 가라앉기를 기다립니다",
+           fx:{buzz:5, aware:2, fanPct:-0.04, loyal:-2},
+           result:`아무 말도 하지 않았습니다. 3일 뒤 다른 이슈가 덮었지만, 팬덤 안에는 앙금이 남았습니다.`, voice:v([`대응 안 하는 것도 전략이긴 하지`, `시간 지나면 묻힌다 조용히 가자`], [`입장 좀 내주세요 답답해 죽겠음`, `무시하는 게 제일 나쁜 거 아닌가요`])},
+        ]};} },
+
+  { id:"gapjil", w:10, when:()=> S.aware>=35 && S.cycle>=1,
+    build(){ return {kind:"event", tone:"bad", kicker:"Controversy · 갑질 논란",
+        title:"현장 스태프 갑질 폭로",
+        body:`익명 커뮤니티에 <b>${esc(S.company.name)}</b> 현장 매니저가 스태프에게 폭언했다는 글이 올라왔습니다.
+          글쓴이는 녹취가 있다고 적었습니다.<br><br>아직 멤버들 이야기는 아니지만, 이름이 같이 오르내리고 있습니다.`,
+        choices:[
+          {label:"즉시 계약 해지하고 사과문", note:"빠르고 비싸게 끊어냅니다",
+           fx:{money:-2500000, loyal:5, buzz:6, fanPct:-0.01},
+           result:`당일 저녁 사과문과 함께 해당 매니저와의 계약을 종료했습니다. 대응이 빨랐다는 평이 돌았습니다.`, voice:v([`하루 만에 정리한 건 인정한다`, `회사가 제대로 일하네 이번엔`], [`꼬리자르기 아니냐는 말이 나오는데`, `매니저 한 명 잘랐다고 끝인가요`])},
+          {label:"진상조사 발표 후 결과 공지", note:"신중하지만 며칠을 끕니다",
+           fx:{buzz:11, aware:4, fanPct:-0.05, loyal:-3},
+           result:`조사 기간 동안 추측성 기사가 계속 나왔습니다. 결과 발표 시점에는 이미 여론이 굳어 있었습니다.`, voice:v([`조사하고 발표하는 게 순서는 맞지`, `결과 나올 때까지 기다려보자`], [`시간 끄는 거 너무 티나는데요`, `발표 나올 때쯤엔 이미 늦었음`])},
+          {label:"사실무근으로 일축", note:"녹취가 나오면 더 커집니다", danger:true,
+           fx:{buzz:17, aware:6, fanPct:-0.13, loyal:-9},
+           result:`이틀 뒤 녹취 일부가 공개됐습니다. 두 번째 사과문은 첫 번째보다 훨씬 비쌌습니다.`, voice:v([`확인된 것도 없이 몰아가는 것도 문제`, `아직 사실관계 모르잖아 다들 진정`], [`녹취 있다는데 왜 부인부터 했지`, `이 회사 앞으로도 이런 식일 듯`])},
+        ]};} },
+
+  { id:"split", w:12, when:()=> S.fan>=7000,
+    build(){ const ms=memberList().slice().sort((a,b)=>overall(b)-overall(a)); const top=ms[0], low=ms[ms.length-1];
+      return {kind:"event", tone:"bad", kicker:"Fandom · 팬덤 분열",
+        title:"분량 논란으로 팬덤이 갈렸습니다",
+        body:`타이틀곡 파트가 <b>${esc(top.name)}</b>에게 쏠렸다는 지적이 팬카페 공지글에 달렸습니다.
+          <b>${esc(low.name)}</b> 개인팬들이 총공을 중단하겠다고 선언했고, 전체팬과 개인팬이 서로를 저격하는 중입니다.`,
+        choices:[
+          {label:"다음 앨범 파트 재분배 약속", note:"공식 공지로 못 박습니다",
+           fx:{loyal:7, relAll:5, buzz:-2},
+           result:`분배 원칙을 공지에 명시했습니다. 개인팬 계정들이 총공에 돌아왔습니다.`, voice:v([`공지 내용 명확해서 좋다`, `약속했으니 이제 좀 믿어볼게요`], [`말만 하고 안 지키면 그만이잖아`, `다음 앨범까지 기다리라는 소리네`])},
+          {label:"자체 콘텐츠로 분량을 채운다", note:"돈과 시간이 듭니다",
+           fx:{money:-1200000, loyal:4, fan:600, relAll:3},
+           result:`멤버별 단독 콘텐츠를 급히 찍었습니다. 비용은 나갔지만 불씨는 잡혔습니다.`, voice:v([`자컨 퀄 생각보다 좋아서 놀랐다`, `멤버별로 다 나와서 만족스러웠음`], [`돈으로 때우는 느낌 지울 수가 없다`, `근본 해결은 아니죠 이건`])},
+          {label:"공식 입장 없음", note:"팬덤끼리 싸우게 둡니다", danger:true,
+           fx:{fanPct:-0.08, loyal:-10, relAll:-4},
+           result:`싸움은 2주를 갔습니다. 그사이 조용히 떠난 계정이 적지 않았습니다.`, voice:v([`팬덤 일에 회사가 끼는 것도 이상함`, `시간 지나면 알아서 정리될 문제`], [`회사가 손 놓고 있는 거 실화인가요`, `총공 접습니다 지쳤어요`])},
+        ]};} },
+
+  { id:"tribute", w:20, when:()=> S.fan>=100000,
+    build(){ const m=one();
+      return {kind:"event", tone:"good", kicker:"Fandom · 조공",
+        title:"팬덤 조공이 들어왔습니다",
+        body:`팬덤 <b>${esc(S.group.fandom)}</b>에서 대형 조공을 보내왔습니다.
+          촬영장 커피차 세 대, 멤버 전원 생일 광고, 그리고 <b>${esc(m.name)}</b> 이름으로 된 기부 증서가 함께 왔습니다.<br><br>
+          규모가 커서 처리 방식을 정해야 합니다.`,
+        choices:[
+          {label:"감사 인사 영상을 올린다", note:"가장 무난하고 확실합니다",
+           fx:{loyal:8, fan:2400, buzz:6, fat:-8, posts:{kind:"own", n:3}},
+           result:`멤버 전원이 나온 감사 영상이 올라갔습니다. 팬덤은 이런 걸 오래 기억합니다.`, voice:v([`감사 영상 보고 진짜 울었다`, `이런 건 팬덤이 오래 기억함`], [`영상 하나로 끝내기엔 규모가 컸는데`, `조금 성의 없다고 느낀 사람 나뿐임?`])},
+          {label:"같은 금액을 회사가 얹어 기부", note:"돈이 나가지만 이미지가 남습니다",
+           fx:{money:-4000000, loyal:12, aware:6, buzz:9, fan:3800},
+           result:`기부 소식이 기사화됐습니다. 팬덤 이름이 기사 제목에 실렸고, 자부심이 눈에 띄게 올라갔습니다.`, voice:v([`기부 기사 떴다 팬덤 이름 실림 개뿌듯`, `우리 돈이 좋은 데 쓰여서 좋다`], [`보여주기용 아니냐는 말도 나온다`, `그 돈이면 멤버들 좀 쉬게 해주지`])},
+          {label:"조용히 멤버들에게 전달", note:"멤버 컨디션이 크게 회복됩니다",
+           fx:{fat:-20, relAll:6, loyal:3},
+           result:`멤버들이 오랜만에 제대로 쉬었습니다. 숙소 분위기가 눈에 띄게 밝아졌습니다.`, voice:v([`이게 맞다 사람이 먼저지`, `푹 쉬었다니 그걸로 됐어요`], [`공개적으로 감사 인사는 없는 건가요`, `조공한 사람들 좀 서운하겠다`])},
+        ]};} },
+
+  { id:"cfoffer", w:16, when:()=> S.aware>=90,
+    build(){ const m=one(); const fee=ri(18,42)*1000000;
+      return {kind:"event", tone:"good", kicker:"Offer · 광고 제의",
+        title:"브랜드 전속 모델 제의",
+        body:`대형 브랜드에서 <b>${esc(S.group.name)}</b> 전속 모델 제의가 들어왔습니다.
+          계약금은 <b>${won(fee)}</b>, 기간은 1년입니다.<br><br>
+          다만 콘셉트가 <b>${esc(m.name)}</b> 중심으로 짜여 있어 팀 내 분량이 한쪽으로 쏠립니다.`,
+        choices:[
+          {label:"계약한다", note:"자금이 크게 들어옵니다",
+           fx:{money:fee, aware:7, buzz:8, relAll:-4, posts:{kind:"cf", n:2}},
+           result:`계약서에 서명했습니다. 통장은 든든해졌지만, 연습실에서 아무도 그 얘기를 하지 않았습니다.`, voice:v([`광고 화보 미쳤다 화면발 뭐야`, `드디어 TV에서도 본다 감격`], [`또 한 명만 밀어주는 구도네`, `센터 몰빵 이제 그만 좀`])},
+          {label:"전원 균등 노출을 조건으로 재협상", note:"금액이 줄어듭니다",
+           fx:{money:Math.round(fee*0.62), aware:6, buzz:6, relAll:4, loyal:3},
+           result:`금액은 깎였지만 여섯 명이 모두 나오는 광고가 됐습니다. 팬덤이 이 결정을 좋아했습니다.`, voice:v([`여섯 명 다 나온다 이게 맞지`, `회사가 이번엔 일 제대로 했다`], [`금액 깎였다던데 그래도 괜찮나`, `욕심 부리다 손해 본 거 아닌지`])},
+          {label:"거절한다", note:"이미지 관리에 집중합니다",
+           fx:{loyal:5, relAll:3},
+           result:`거절 사유를 팀에게 그대로 설명했습니다. 돈은 못 벌었지만 신뢰는 벌었습니다.`, voice:v([`무리 안 하는 것도 능력이다`, `이미지 관리 잘하는 회사네`], [`왜 거절해요 진짜 아깝다`, `이런 기회 또 안 온다니까요`])},
+        ]};} },
+
+  { id:"yearend", w:14, when:()=> S.aware>=90 && S.promoWeek>=3,
+    build(){ return {kind:"event", tone:"good", kicker:"Offer · 연말 무대",
+        title:"연말 시상식 초청",
+        body:`지상파 연말 무대에 <b>${esc(S.group.name)}</b>가 초청됐습니다.
+          컬래버 무대 제안이 함께 왔는데, 상대는 <b>${esc(anyRival().name)}</b>입니다.`,
+        choices:[
+          {label:"컬래버 수락", note:"양쪽 팬덤에 노출됩니다",
+           fx:{aware:9, buzz:22, fan:5200, fat:16, posts:{kind:"yearend", n:3}},
+           result:`무대는 그날의 화제였습니다. 상대 팬덤 일부가 유입됐습니다.`, voice:v([`컬래버 무대 올해 최고였다`, `두 팀 케미 예상 외로 좋았음`], [`우리 애들 분량 밀린 거 안 보이나`, `굳이 컬래버를 해야 했을까`])},
+          {label:"단독 무대만 진행", note:"안전하게 갑니다",
+           fx:{aware:6, buzz:13, fan:2600, fat:11, posts:{kind:"yearend", n:2}},
+           result:`단독 무대로 깔끔하게 마무리했습니다. 사고 없이 끝난 것도 성과입니다.`, voice:v([`단독 무대 깔끔해서 좋았다`, `우리 곡으로만 채운 게 만족스러움`], [`컬래버 했으면 더 컸을 텐데 아쉽`, `안전빵으로 간 느낌이라 심심했다`])},
+        ]};} },
+
+  { id:"rivalscandal", w:11, when:()=> S.rivals.length>0 && S.aware>=20,
+    build(){ const r=anyRival();
+      return {kind:"event", tone:"good", kicker:"Industry · 업계 소식",
+        title:`${r.name} 활동 중단`,
+        body:`같은 시기 컴백했던 <b>${esc(r.tier)} 기획사</b> 그룹 <b>${esc(r.name)}</b>이(가) 멤버 논란으로 활동을 중단했습니다.
+          음악방송 자리 하나가 비었고, 매체 관심이 흩어졌습니다.`,
+        choices:[
+          {label:"빈 자리를 채우러 간다", note:"노출을 가져옵니다",
+           fx:{aware:7, buzz:11, fan:1600, fat:8},
+           result:`빈 슬롯이 우리에게 왔습니다. 준비할 시간은 짧았지만 무대는 나쁘지 않았습니다.`, voice:v([`기회 잡는 것도 실력이다`, `준비 짧았는데 무대 잘했음`], [`남 논란에 숟가락 얹는 느낌인데`, `타이밍이 좀 얍삽하다`])},
+          {label:"언급을 자제한다", note:"조용히 있습니다",
+           fx:{loyal:4, buzz:3},
+           result:`아무 말도 얹지 않았습니다. 업계에서 그 태도를 기억하는 사람들이 있었습니다.`, voice:v([`조용히 있는 게 클래스지`, `이런 태도 오래 기억될 듯`], [`기회를 왜 그냥 날리나요`, `회사가 너무 소극적임`])},
+        ]};} },
+
+  { id:"sasaeng", w:9, when:()=> S.fan>=35000,
+    build(){ const m=one();
+      return {kind:"event", tone:"bad", kicker:"Security · 사생 문제",
+        title:`${m.name} 숙소 앞 무단 촬영`,
+        body:`<b>${esc(m.name)}</b>의 숙소 앞에서 무단 촬영이 반복되고 있습니다.
+          당사자는 괜찮다고 하지만, 최근 2주 동안 잠을 거의 못 잤습니다.`,
+        choices:[
+          {label:"경호 인력을 붙이고 숙소를 옮긴다", note:"비용이 큽니다",
+           fx:{money:-5500000, fat:-14, loyal:6, relAll:4},
+           result:`이사와 경호 계약을 한 번에 처리했습니다. ${esc(josa(m.name,"은는"))} 그날 밤 처음으로 푹 잤습니다.`, voice:v([`이제야 제대로 조치했네 다행`, `안전이 제일 먼저다 잘했어요`], [`진작 했어야 하는 거 아닌가요`, `이 정도 되도록 뭐 했는지`])},
+          {label:"공식 경고문만 게시", note:"싸고 약합니다",
+           fx:{loyal:2, fat:3},
+           result:`경고문이 올라갔습니다. 며칠 조용하다가 다시 시작됐습니다.`, voice:v([`일단 공식 조치는 나왔네`, `조금 지켜보자 반응 있을 수도`], [`경고문 한 장으로 되겠어요?`, `너무 미온적이라 화가 난다`])},
+          {label:"당분간 지켜본다", note:"멤버 컨디션이 나빠집니다", danger:true,
+           fx:{fat:14, loyal:-5, relAll:-3},
+           result:`${esc(josa(m.name,"이가"))} 스케줄 중 한 번 무너졌습니다. 대기실에서 30분을 나오지 못했습니다.`, voice:v([`과잉 대응도 문제이긴 하지`, `조용히 가는 게 나을 때도 있음`], [`멤버 상태가 안 보이나요 진짜`, `회사 뭐 하는 거임 화난다`])},
+        ]};} },
+
+  { id:"clash", w:10, when:()=> S.rivals.length>0 && S.promoWeek<=3,
+    build(){ const r=anyRival();
+      return {kind:"event", tone:"bad", kicker:"Industry · 컴백 충돌",
+        title:`${r.name}와 컴백이 겹쳤습니다`,
+        body:`<b>${esc(r.name)}</b>가 같은 주 컴백을 발표했습니다. ${esc(r.tier)} 기획사라 물량이 다릅니다.
+          음악방송 1위 후보는 사실상 정해졌고, 매체 관심도 그쪽으로 쏠릴 겁니다.`,
+        choices:[
+          {label:"정면으로 붙는다", note:"화제성은 얻지만 소모가 큽니다",
+           fx:{buzz:14, aware:6, fat:13, fan:900},
+           result:`같은 무대에 나란히 섰습니다. 순위는 밀렸지만 비교 영상이 알고리즘을 탔습니다.`, voice:v([`정면으로 붙는 거 멋있다`, `비교 영상은 우리가 이겼음`], [`질 싸움을 왜 하나요`, `체력만 갈린 것 같아서 속상`])},
+          {label:"활동 시기를 살짝 미룬다", note:"조용하지만 안전합니다",
+           fx:{buzz:-6, fat:-9, loyal:2},
+           result:`한 주를 비웠습니다. 소모는 줄었지만 초반 화력도 함께 식었습니다.`, voice:v([`무리 안 한 판단 나쁘지 않다`, `체력 아낀 거 나중에 티날 듯`], [`초반 화력 다 날린 거 아닌가`, `피하는 것처럼 보여서 아쉽다`])},
+          {label:"숏폼에 전량 투입한다", note:"다른 전장에서 싸웁니다",
+           fx:{buzz:19, aware:3, fat:7},
+           result:`음방 대신 숏폼에 집중했습니다. 챌린지 참여 수가 상대 그룹을 앞질렀습니다.`, voice:v([`챌린지 참여수 우리가 위다`, `전장 제대로 골랐네 회사`], [`음방을 버리는 게 맞는 선택인가`, `숏폼만으론 한계 있어요`])},
+        ]};} },
+];
+
+
+/** 사이가 좋아진 둘이 실제로 시간을 함께 보냅니다. 사적인 외출은 화제이자 위험입니다. */
+const OUTINGS = [
+  {p:"놀이공원",   d:"휴무일에 둘이서 놀이공원에 갔습니다. 모자와 마스크를 썼지만 알아본 팬이 있었습니다."},
+  {p:"새벽 드라이브", d:"스케줄 끝나고 한강까지 드라이브를 다녀왔습니다. 편의점 앞 사진이 커뮤니티에 올라왔습니다."},
+  {p:"생일 파티",  d:"숙소에서 조촐하게 생일상을 차렸습니다. 케이크 사진이 개인 계정에 올라갔습니다."},
+  {p:"동네 산책",  d:"숙소 근처를 나란히 걷는 모습이 목격됐습니다. 둘 다 편한 차림이었습니다."},
+  {p:"심야 영화",  d:"심야 영화를 보러 갔다가 극장 앞에서 사진이 찍혔습니다."},
+  {p:"바닷가",     d:"휴차 날 바다까지 다녀왔습니다. 팬 목격담이 실시간으로 퍼졌습니다."},
+];
+function bondEvent(){
+  const warm = S.rels.filter(r=> r.aff >= 55 && !r.flags["out"+S.cycle]);
+  if(!warm.length || rnd() > 0.42) return null;
+  const r = pick(warm), A = T(r.a), B = T(r.b);
+  if(!A || !B) return null;
+  r.flags["out"+S.cycle] = true;
+  const o = pick(OUTINGS), ship = shipName(A.name, B.name);
+  return {kind:"event", tone:"good", kicker:"Off duty · 사적 일정",
+    title:`${A.name} × ${B.name} · ${o.p}`,
+    body:`${o.d}<br><br>팬들은 벌써 <b>${esc(ship)}</b>라는 이름을 붙였습니다.
+      아직 열애설 수준은 아니지만, 사진이 한 장 더 나오면 어떻게 될지 모릅니다.`,
+    choices:[
+      {label:"자체 콘텐츠로 정식 공개", note:"화제를 우리 손으로 관리합니다",
+       fx:{heat:{k:r.k, d:20}, rel:{k:r.k, d:8}, buzz:11, fan:900, loyal:3, money:-800000},
+       result:`같은 코스를 자컨으로 다시 찍었습니다. 목격담은 공식 콘텐츠에 덮였고, ${esc(ship)} 클립이 하루 만에 돌았습니다.`,
+       voice:v([`${ship} 자컨 이거 실화냐 회사 일 잘한다`, `기다렸던 조합이라 미쳐버림`],
+               [`이걸 굳이 콘텐츠로 만드나요`, `다른 멤버들 분량이 또 밀렸다`])},
+      {label:"그냥 둔다", note:"자연스럽게 흘러가게 둡니다",
+       fx:{heat:{k:r.k, d:11}, rel:{k:r.k, d:5}, buzz:5},
+       result:`따로 손대지 않았습니다. 목격담은 팬덤 안에서만 조용히 돌았습니다.`,
+       voice:v([`둘이 친한 거 보기 좋다`, `사생활은 그냥 두는 게 맞지`],
+               [`회사가 관리를 안 하는 거 아님?`, `사진 더 나오면 어쩌려고`])},
+      {label:"사적 외출을 제한한다", note:"안전하지만 사이가 식습니다", danger:true,
+       fx:{rel:{k:r.k, d:-16}, heat:{k:r.k, d:-8}, loyal:-2, relAll:-2},
+       result:`외출 규정을 다시 공지했습니다. 위험은 줄었지만, 그날 이후 숙소가 조용해졌습니다.`,
+       voice:v([`관리 확실히 하는 건 좋다`, `사고 나면 늦으니까`],
+               [`애들 숨 쉴 구멍은 줘야죠`, `${ship} 요즘 같이 안 다니는 거 티남`])},
+    ]};
+}
+
+/** 상담이 우선, 그다음 가중 추첨. 활동이 커질수록 사건도 잦아집니다. */
+function rollEvent(){
+  if(!S.group) return null;
+  const c = counselEvent(); if(c) return c;
+  const bo = bondEvent();     if(bo) return bo;
+  const chance = clamp(0.30 + S.aware/260 + Math.min(S.fan, 120000)/460000, 0, 0.72);
+  if(rnd() > chance) return null;
+  const cands = DECK.filter(e=> e.when() && !(S.seenEvents||[]).includes(e.id + ":" + S.cycle));
+  if(!cands.length) return null;
+  const total = cands.reduce((n,e)=>n+e.w, 0);
+  let r = rnd()*total;
+  for(const e of cands){ r -= e.w; if(r<=0){ (S.seenEvents = S.seenEvents||[]).push(e.id + ":" + S.cycle); return e.build(); } }
+  return null;
+}
+
+/* ================= events ================= */
+const CLICK_TARGETS = ["act","dist","pos","prog","clear","pickid","center","color","tier","actv",
+  "center2","join","leave","choice","push","atype","titleidx"].map(k=>`[data-${k}]`).join(",");
+document.addEventListener("click", e=>{
+  // 위임 대상은 한곳에서 관리합니다 — 새 data-* 액션을 추가할 때 여기에 꼭 넣으세요.
+  const el = e.target.closest(CLICK_TARGETS);
+  if(!el) return;
+
+  if(el.dataset.dist){ S.company.district=el.dataset.dist; save(); render(); return; }
+  if(el.dataset.pos){ lastPos=el.dataset.pos; $$("#nPos .chip").forEach(c=>c.classList.toggle("on", c===el)); return; }
+  if(el.dataset.prog){ if(S.trainPlan.length<3){ S.trainPlan.push(el.dataset.prog); save(); render(); } return; }
+  if(el.dataset.actv){ if(S.promoPlan.length<3){ S.promoPlan.push(el.dataset.actv); save(); render(); } return; }
+  if(el.dataset.clear!=null){ (S.phase==="training"?S.trainPlan:S.promoPlan).splice(+el.dataset.clear,1); save(); render(); return; }
+  if(el.dataset.pickid){
+    const d=draft(), id=el.dataset.pickid, i=d.members.indexOf(id);
+    if(i>=0){ d.members.splice(i,1); if(d.center===id) d.center=null; }
+    else if(d.members.length<7) d.members.push(id);
+    syncDebut(); render(); return;
+  }
+  if(el.dataset.center){ draft().center=el.dataset.center; syncDebut(); render(); return; }
+  if(el.dataset.color){ draft().color=el.dataset.color; syncDebut(); render(); return; }
+  if(el.dataset.tier){ const [p,t]=el.dataset.tier.split(":"); S.album.tiers[p]=t; syncAlbum(); save(); render(); return; }
+  if(el.dataset.atype){ syncTracks(); setAlbumType(el.dataset.atype); save(); render(); return; }
+  if(el.dataset.titleidx != null){ syncTracks(); S.album.titleIdx = +el.dataset.titleidx;
+    S.album.title = S.album.tracks[S.album.titleIdx] || ""; save(); render(); return; }
+  if(el.dataset.push != null){ S.pushShip = el.dataset.push || null; save(); render(); return; }
+  if(el.dataset.center2){ S.group.center=el.dataset.center2; save(); render(); return; }
+  if(el.dataset.join){ if(S.group.members.length<7){ S.group.members.push(el.dataset.join); syncRels(); save(); render(); } return; }
+  if(el.dataset.leave){
+    if(S.group.members.length<=4) return;
+    const id=el.dataset.leave;
+    S.group.members = S.group.members.filter(x=>x!==id);
+    if(S.group.center===id) S.group.center = S.group.members[0];
+    syncRels(); save(); render(); return;
+  }
+
+  if(el.dataset.choice != null){ chooseModal(+el.dataset.choice); return; }
+  perform(el.dataset.act);
+});
+
+function chooseModal(i){
+  const m = S.modal, c = m && m.choices && m.choices[i];
+  if(!c) return;
+  if(m.kind === "event"){
+    applyFx(c.fx);
+    // 여론은 결과창을 닫은 뒤에 흐릅니다 — 모달에 가려지면 보이지 않으니까요.
+    ask({kind:"note", kicker:m.kicker, tone:c.danger?"bad":m.tone, title:"결과", body:c.result,
+         voice:c.voice, vfx:c.fx, choices:[{label:"확인하고 여론 보기"}]});
+    return;
+  }
+  if(m.kind === "note" && m.voice){
+    if(!phoneOpen && phoneAvailable()) phoneOpen = true;   // 여론은 보여야 의미가 있습니다
+    closeModal();
+    pushVoices(m.voice, m.vfx);
+    return;
+  }
+  if(m.kind === "confirm"){ const act = c.act; closeModal(); if(act) perform(act); return; }
+  closeModal();
+  if(S.phase === "results" && !S.result) return;
+}
+
+function perform(act){
+  switch(act){
+    case "start":  S=blank(); S.seed=Date.now()|0; go("company"); break;
+    case "resume": S=loadSave()||blank(); phoneOpen = window.innerWidth >= 1080; render(); break;
+    case "company:submit":
+      readCompany();
+      if(!S.company.name||!S.company.ceo) return;
+      S.seed = hash(S.company.name + S.company.ceo); S.cur = 0;
+      go("recruit"); break;
+    case "recruit:add": {
+      const name=($("#nName").value||"").trim();
+      if(!name){ $("#nName").focus(); return; }
+      if(S.trainees.length>=9 || S.money<CONTRACT) return;
+      lastGender = $("#nGender").value;
+      lastAge = clamp(parseInt($("#nAge").value,10) || 18, 14, 35);
+      const on = $("#nPos .chip.on"); lastPos = on ? on.dataset.pos : lastPos;
+      S.trainees.push(makeTrainee(name, lastGender, lastPos, lastAge));
+      S.money -= CONTRACT; S.costs.contract += CONTRACT;
+      save(); render(); setTimeout(()=>{const f=$("#nName"); if(f) f.focus();},30); break;
+    }
+    case "recruit:undo":
+      if(S.trainees.length){ S.trainees.pop(); S.money += CONTRACT; S.costs.contract -= CONTRACT; save(); render(); }
+      break;
+    case "recruit:done":
+      if(S.recruitReturn==="hub"){ S.recruitReturn=null; go("hub"); }
+      else if(S.trainees.length>=4){ S.chatter = makeChatter(["vocalL","danceL"], "train"); go("training"); }
+      break;
+    case "train:close": if(S.trainPlan.length===3) closeTrainWeek(); break;
+    case "debut:confirm": {
+      syncDebut(); const d=draft();
+      if(d.members.length<4||!d.name||!d.fandom||!d.center) return;
+      S.group={name:d.name, members:d.members.slice(), center:d.center, fandom:d.fandom, color:d.color};
+      document.documentElement.style.setProperty("--fan", d.color);
+      S.rivals = makeRivals();
+      S.rels   = makeRels(d.members);
+      S.chatter = makeChatter(["own","camera"], "promo");
+      S.trainees.forEach(t=> t.fat = 12);   // 데뷔 준비 기간 동안 회복
+      S.fan = 220 + S.trainees.length*30; S.loyal = 62; S.aware = 4 + DISTRICTS[S.company.district].aw;
+      startAlbum();
+      phoneOpen = window.innerWidth >= 1080;
+      pushPosts("debut", 3);
+      go("produce"); break;
+    }
+    case "album:auto": {
+      syncTracks();
+      S.album.tracks = S.album.tracks.map(t=> t || autoTitle());
+      S.album.title = S.album.tracks[S.album.titleIdx];
+      save(); render(); break;
+    }
+    case "album:even": syncTracks(); evenParts(); save(); render(); break;
+    case "produce:done": {
+      syncAlbum();
+      const cost = Math.round(PROD.reduce((s,p)=>s+TIERS.find(t=>t.id===S.album.tiers[p.id]).cost, 0) * ALBUM_TYPES[S.album.type].cost);
+      if(!S.album.tracks.every(t=>t) || cost>S.money) return;
+      S.money -= cost; S.costs.prod += cost;
+      S.fanAtCycleStart = S.fan;
+      S.chatter = makeChatter(["music","own"], "promo");
+      go("promo"); break;
+    }
+    case "promo:close": if(S.promoPlan.length===3) closePromoWeek(); break;
+    case "toHub": enterHub(); break;
+    case "hub:next": if(!termLeft().expired) nextCycle(); break;
+    case "hub:recruit": S.recruitReturn="hub"; go("recruit"); break;
+    case "hub:renew": {
+      const fee = memberList().length * RENEW_PER_MEMBER;
+      if(S.money < fee) return;
+      ask({kind:"confirm", kicker:"Contract", title:`${S.contractYears}년 재계약`,
+           body:`재계약금 <b>${won(fee)}</b>을 지급하고 계약을 ${S.contractYears}년 연장합니다.`,
+           choices:[{label:"재계약한다", note:won(fee)+" 즉시 지급", act:"hub:renew!"}, {label:"취소"}]});
+      break;
+    }
+    case "hub:renew!": {
+      const fee = memberList().length * RENEW_PER_MEMBER;
+      if(S.money < fee) return;
+      S.money -= fee; S.months = 0; S.renewals++; save(); render(); break;
+    }
+    case "hub:disband":
+      ask({kind:"confirm", tone:"bad", kicker:"Contract", title:"계약을 종료할까요?",
+           body:"활동을 마무리하고 커리어를 정산합니다. 되돌릴 수 없습니다.",
+           choices:[{label:"계약을 종료한다", danger:true, act:"hub:disband!"}, {label:"취소"}]});
+      break;
+    case "hub:disband!": go("ending"); break;
+    case "reset":
+      ask({kind:"confirm", tone:"bad", kicker:"Danger zone", title:"처음부터 다시 시작할까요?",
+           body:"저장된 기획사, 멤버, 누적 성과가 <b>전부 삭제</b>됩니다. 되돌릴 수 없습니다.",
+           choices:[{label:"삭제하고 처음부터", note:"모든 기록이 사라집니다", danger:true, act:"reset!"},
+                    {label:"취소"}]});
+      break;
+    case "reset!":
+      wipe(); debutDraft = null; lastGender = "f"; lastPos = "vocal"; lastAge = 18;
+      phoneOpen = window.innerWidth >= 1080;
+      S = blank(); S.phase = "intro"; save(); render();
+      break;
+  }
+}
+function readCompany(){
+  const n=$("#fName"), c=$("#fCeo");
+  if(n) S.company.name=n.value.trim();
+  if(c) S.company.ceo=c.value.trim();
+}
+function syncDebut(){
+  const d=draft(), n=$("#dName"), f=$("#dFandom");
+  if(n) d.name=n.value.trim(); if(f) d.fandom=f.value.trim();
+}
+function syncTracks(){
+  if(!S.album) return;
+  $$("[data-track]").forEach(inp=>{ S.album.tracks[+inp.dataset.track] = inp.value.trim(); });
+  S.album.title = S.album.tracks[S.album.titleIdx] || "";
+}
+function syncAlbum(){ syncTracks(); }
+
+/* live input echoes */
+document.addEventListener("input", e=>{
+  const id=e.target.id;
+  if(id==="fName"){ S.company.name=e.target.value.trim(); const p=$("#pvName"); if(p)p.textContent=S.company.name||"—"; toggleCta(!!S.company.name&&!!S.company.ceo); $(".co-n").textContent=S.company.name||"IDOL AGENCY"; }
+  if(id==="fCeo"){ S.company.ceo=e.target.value.trim(); const p=$("#pvCeo"); if(p)p.textContent=S.company.ceo||"—"; toggleCta(!!S.company.name&&!!S.company.ceo); }
+  if(id==="dName"||id==="dFandom"){ syncDebut(); const d=draft(); toggleCta(d.members.length>=4&&!!d.name&&!!d.fandom&&!!d.center); }
+  if(e.target.dataset && e.target.dataset.track != null){
+    S.album.tracks[+e.target.dataset.track] = e.target.value.trim();
+    S.album.title = S.album.tracks[S.album.titleIdx] || "";
+    const cost = Math.round(PROD.reduce((s,p)=>s+TIERS.find(t=>t.id===S.album.tiers[p.id]).cost,0) * ALBUM_TYPES[S.album.type].cost);
+    toggleCta(S.album.tracks.every(t=>t) && cost<=S.money);
+  }
+  if(e.target.dataset && e.target.dataset.part){
+    rebalanceParts(e.target.dataset.part, +e.target.value);
+    save(); render();
+  }
+});
+function toggleCta(ok){ const b=$(".cta .btn.primary"); if(b) b.disabled=!ok; }
+
+document.addEventListener("keydown", e=>{
+  if(e.key==="Enter" && document.activeElement && document.activeElement.id==="nName"){
+    e.preventDefault(); const b=document.querySelector('[data-act="recruit:add"]'); if(b&&!b.disabled) b.click();
+  }
+});
+
+let wasWide = window.innerWidth >= 1080;
+window.addEventListener("resize", ()=>{
+  const wide = window.innerWidth >= 1080;
+  if(wasWide && !wide && phoneOpen) phoneOpen = false;   // 좁아지면 보드를 가리지 않도록
+  wasWide = wide; drawPhone();
+});
+$("#phClose").addEventListener("click", ()=>{ phoneOpen=false; drawPhone(); });
+$("#phoneBtn").addEventListener("click", ()=>{ phoneOpen=true; S.unread=0; drawPhone(); });
+
+/* ================= boot ================= */
+S = blank();
+const saved = loadSave();
+if(saved && saved.phase !== "intro"){ /* keep intro; 이어하기 restores */ }
+render();
+</script>
+</body>
 </html>
