@@ -143,6 +143,17 @@ select.inp{appearance:none; background-image:linear-gradient(45deg,transparent 5
 .hintline{font-size:11.5px; color:var(--muted); margin:-8px 0 14px}
 
 .chips{display:flex; flex-wrap:wrap; gap:7px}
+.distgrid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px}
+@media (max-width:760px){.distgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.distcard{
+  text-align:left; padding:10px 11px; border-radius:8px; border:1px solid var(--ink-line);
+  background:var(--ink-2); color:var(--muted); transition:.14s; display:flex; flex-direction:column; gap:3px;
+}
+.distcard b{font-size:12.5px; font-weight:600; color:inherit}
+.distcard span{font-size:11px; color:var(--dim)}
+.distcard:hover{border-color:rgba(255,255,255,.28); color:var(--paper)}
+.distcard.on{border-color:var(--neon); background:rgba(255,31,61,.09); color:var(--paper)}
+.distcard.on span{color:var(--neon)}
 .chip{
   padding:7px 12px; border-radius:6px; border:1px solid var(--ink-line);
   background:var(--ink-2); color:var(--muted); font-size:12.5px; transition:.14s;
@@ -440,17 +451,25 @@ const POSITIONS = {
 const CONTRACT_YEARS = 7, MONTHS_PER_CYCLE = 6;
 const GENDERS = {f:"여성", m:"남성"};
 const GRADES  = [
-  {g:"S", w:6,  mult:1.55, cap:96},
-  {g:"A", w:14, mult:1.30, cap:88},
-  {g:"B", w:30, mult:1.10, cap:80},
-  {g:"C", w:32, mult:0.92, cap:72},
-  {g:"D", w:18, mult:0.75, cap:64},
+  {g:"S", w:12, mult:1.55, cap:96},
+  {g:"A", w:26, mult:1.30, cap:88},
+  {g:"B", w:34, mult:1.10, cap:80},
+  {g:"C", w:20, mult:0.92, cap:72},
+  {g:"D", w:8,  mult:0.75, cap:64},
 ];
 const DISTRICTS = {
-  gangnam:{label:"강남구 청담동", rent:900000,  note:"업계 한복판. 임대료가 비싼 만큼 미팅이 들어옵니다.", aw:6},
-  mapo   :{label:"마포구 합정동", rent:600000,  note:"인디와 방송국 사이. 무난하고 균형 잡힌 선택.",     aw:3},
-  seongsu:{label:"성동구 성수동", rent:700000,  note:"콘텐츠 스튜디오 밀집. 자체 콘텐츠에 유리합니다.",  aw:4},
-  guro   :{label:"구로구 구로동", rent:350000,  note:"싸다. 대신 아무도 찾아오지 않습니다.",             aw:1},
+  gangnam :{label:"강남구 청담동", rent:900000,  note:"업계 한복판. 임대료가 비싼 만큼 미팅이 들어옵니다.",   aw:6},
+  yeouido :{label:"영등포구 여의도", rent:850000, note:"방송국 코앞. 섭외 전화가 빨리 옵니다.",              aw:6},
+  mapo    :{label:"마포구 합정동", rent:600000,  note:"인디와 방송국 사이. 무난하고 균형 잡힌 선택.",       aw:3},
+  seongsu :{label:"성동구 성수동", rent:700000,  note:"콘텐츠 스튜디오 밀집. 자체 콘텐츠에 유리합니다.",    aw:4},
+  hongdae :{label:"마포구 홍대",   rent:650000,  note:"버스킹과 클럽 신. 화제성 만들기엔 최고입니다.",      aw:4},
+  itaewon :{label:"용산구 이태원", rent:750000,  note:"외국계 매체 접촉이 쉽습니다. 해외 팬덤에 유리합니다.", aw:5},
+  jamsil  :{label:"송파구 잠실",   rent:550000,  note:"대형 공연장이 가깝습니다. 콘서트 동선이 짧아집니다.", aw:3},
+  ilsan   :{label:"고양시 일산",   rent:400000,  note:"방송 세트장 단지 근처. 저렴한데 은근히 유리합니다.", aw:3},
+  guro    :{label:"구로구 구로동", rent:350000,  note:"싸다. 대신 아무도 찾아오지 않습니다.",               aw:1},
+  incheon :{label:"인천 송도",     rent:300000,  note:"서울 밖 첫 발걸음. 공항이 가까워 스케줄이 편합니다.", aw:1},
+  busan   :{label:"부산 해운대",   rent:280000,  note:"지방 기획사. 서울 노출은 적지만 임대료가 쌉니다.",   aw:0},
+  daegu   :{label:"대구 동성로",   rent:250000,  note:"가장 저렴합니다. 인지도는 스스로 만들어야 합니다.",  aw:0},
 };
 
 /* training programs */
@@ -925,8 +944,12 @@ function vCompany(){
         <label class="field"><span>CEO · 대표 이름</span>
           <input class="inp" id="fCeo" maxlength="10" placeholder="예: 김서연" value="${esc(c.ceo)}"></label>
         <div class="field"><span>Office · 사무실 위치</span>
-          <div class="chips" id="fDist">
-            ${Object.entries(DISTRICTS).map(([k,d])=>`<button class="chip ${c.district===k?"on":""}" data-dist="${k}">${d.label} · 월 ${wonShort(d.rent)}</button>`).join("")}
+          <div class="distgrid" id="fDist">
+            ${Object.entries(DISTRICTS).map(([k,d])=>`
+              <button class="distcard ${c.district===k?"on":""}" data-dist="${k}">
+                <b>${d.label}</b>
+                <span class="tabular">월 ${wonShort(d.rent)}</span>
+              </button>`).join("")}
           </div>
         </div>
         <p class="hintline" id="distNote">${DISTRICTS[c.district].note}</p>

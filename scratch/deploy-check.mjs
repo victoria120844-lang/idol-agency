@@ -18,6 +18,8 @@ ok(await has('.intro'), '로컬 index.html 부팅');
 ok((await p.title()) === 'IDOL AGENCY SIMULATOR', `타이틀 (${await p.title()})`);
 await click('[data-act="start"]');
 await p.type('#fName','스타라인 엔터테인먼트'); await p.type('#fCeo','김서연');
+ok((await p.$$('[data-dist]')).length === 12, '지역 12곳 노출');
+await click('[data-dist="busan"]');
 await click('[data-act="company:submit"]');
 for (const [n,pos] of [['최유진','leader'],['한소희','vocal'],['배다인','subVocal'],['윤채원','dance'],['서지아','rap']]) {
   await p.$eval('#nName', e=>e.value=''); await p.type('#nName', n);

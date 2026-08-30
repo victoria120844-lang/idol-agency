@@ -1,0 +1,11 @@
+import puppeteer from '/Users/chogayeon/idol-agency-simulator/node_modules/puppeteer-core/lib/puppeteer/puppeteer-core.js';
+const b = await puppeteer.launch({ executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless:'new', args:['--no-sandbox'] });
+const p = await b.newPage(); await p.setViewport({width:1440,height:1100});
+await p.goto('http://localhost:8899/', { waitUntil:'networkidle0' });
+const w=ms=>new Promise(r=>setTimeout(r,ms));
+await p.click('[data-act="start"]'); await w(150);
+await p.type('#fName','스타라인 엔터테인먼트'); await p.type('#fCeo','김서연'); await w(150);
+await p.screenshot({path:'scratch/shot-company-1440.png'});
+await p.setViewport({width:390,height:900}); await w(200);
+await p.screenshot({path:'scratch/shot-company-390.png', fullPage:true});
+await b.close();
